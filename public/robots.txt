@@ -1,0 +1,8 @@
+# The same policy as the main site. Crawlers may read the lab, so they can
+# see the noindex on every response (the X-Robots-Tag header), which keeps it
+# out of search results. Blocking them here would hide that noindex, and a
+# blocked address can still be listed if another page links to it.
+# AI training crawlers are blocked in Cloudflare, which adds the matching
+# rules above this file's contents (Bot Preference Sync).
+User-agent: *
+Allow: /

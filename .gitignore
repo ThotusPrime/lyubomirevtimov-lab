@@ -1,0 +1,11 @@
+# The practice keys and local Worker secrets stay out of Git
+# (the root .gitignore covers .env and .dev.vars too; this is a second net).
+.env
+.dev.vars*
+.wrangler/
+
+# The practice virtual environment and what the tools write
+practice/.venv/
+__pycache__/
+results*.csv
+*_fixed.py

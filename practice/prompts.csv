@@ -1,0 +1,13 @@
+id,prompt
+p01,"A creator was paid twice for the same month. The duplicate came from a payout file that was approved two times. We need to recover the money."
+p02,"Refunds take up to ten working days to reach the customer's bank. Most of the delay is on the bank's side, not ours."
+p03,"An invoice was generated with the wrong VAT number. The customer needs a credit note and a corrected invoice."
+p04,"The monthly payout run starts on the first working day. Approvals close two days later, and the period locks after that."
+p05,"A webhook returned 500 errors for an hour last night. Orders placed in that window were not tracked."
+p06,"Our API returns 429 when a client sends more than five requests in ten seconds. Clients should wait and retry."
+p07,"A merchant asked why their dashboard shows fewer sales than their own shop. The difference comes from returns that we deduct."
+p08,"Bank details failed validation because the IBAN had a space at the end. The form now trims it before checking."
+p09,"Latency on the large model doubled after the release. The team traced it to a missing cache on model weights."
+p10,"A customer exceeded their monthly quota on the twentieth. They asked whether they can raise it without changing plans."
+p11,"Two accounts belong to the same person. They want them merged without losing their payout history."
+p12,"The tracking link broke for one market because the URL was longer than the network allows. Shorter links fixed it."

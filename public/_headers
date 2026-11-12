@@ -1,0 +1,4 @@
+# Headers for the static files Cloudflare serves without running the Worker.
+# The Worker sets the same X-Robots-Tag on everything it answers itself.
+/*
+  X-Robots-Tag: noindex, nofollow

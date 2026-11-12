@@ -1,0 +1,33 @@
+// The lab: a practice inference API, deployed as its own Worker so it never
+// touches the site. Deploy from the repository root with
+//   npx wrangler deploy -c lab/wrangler.jsonc
+// Workers Builds deploys only the site (the root wrangler.jsonc), not this.
+{
+	"$schema": "../node_modules/wrangler/config-schema.json",
+	"name": "lyubomirevtimov-lab",
+	"main": "src/index.js",
+	"compatibility_date": "2026-11-08",
+	// The fonts, favicon and robots.txt, copied from the site. Cloudflare
+	// serves these files itself, free and without running the Worker.
+	"assets": { "directory": "./public" },
+	// Don't send Wrangler usage telemetry to Cloudflare.
+	"send_metrics": false,
+	// Serve the lab on its own subdomain. Cloudflare creates the DNS record.
+	"routes": [{ "pattern": "lab.lyubomirevtimov.com", "custom_domain": true }],
+	"workers_dev": true,
+	"preview_urls": false,
+	// 5 chat completion requests per 10 seconds for each account. The limit is
+	// approximate and counted per Cloudflare location, which is fine for one
+	// person practising.
+	// https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
+	"ratelimits": [
+		{
+			"name": "RATE_LIMITER",
+			"namespace_id": "2101",
+			"simple": { "limit": 5, "period": 10 }
+		}
+	]
+	// The API keys live in the LAB_KEYS secret, never in this repository:
+	//   npx wrangler secret put LAB_KEYS -c lab/wrangler.jsonc
+	// Its value is JSON: {"<key>": {"id": "acct_…", "plan": "…", "balance": 25}}
+}
