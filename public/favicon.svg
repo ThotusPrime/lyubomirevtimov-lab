@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-6.2 -3.2 123.4 123.4" fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
-	<!-- The mark from src/components/Mark.astro at favicon weight: oxblood, or brass when the device is dark. -->
+	<!-- The site's mark at favicon weight, in the sleeve's blue, or the dark theme's lighter blue when the device is dark (src/styles/theme.css). -->
 	<style>
-		g { stroke: #7a1f2b; }
-		@media (prefers-color-scheme: dark) { g { stroke: #d9a441; } }
+		g { stroke: #1d3fc4; }
+		@media (prefers-color-scheme: dark) { g { stroke: #9db0ff; } }
 	</style>
 	<g>
 		<circle cx="35" cy="48" r="19"/>
