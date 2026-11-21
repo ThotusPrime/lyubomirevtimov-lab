@@ -28,7 +28,7 @@ The chats it was made in:
 
 - Node.js is managed with fnm from `.nvmrc`, the same version as the site. In a non-interactive shell, such as an agent's, run `eval "$(fnm env --shell zsh)" && fnm use` before any `npm` or `npx` command.
 - `npm ci` once, then `npm run dev` serves it on http://localhost:8788 (the `lab-dev` entry in `.claude/launch.json` does the same). Point the tools at it with `export LAB_BASE_URL=http://localhost:8788/v1`; without that they use the live lab.
-- The Python tools run from `practice/` in its virtual environment: `source .venv/bin/activate`. It was recreated here on 21 November 2026 with the same package versions, from `practice/requirements.txt`.
+- The Python tools run from `practice/` in its virtual environment: `source .venv/bin/activate`. It was recreated here on 21 November 2026 from `practice/requirements.txt`, on the macOS system Python (3.9.6, which no longer gets updates). That file names `requests` and `openai` without versions, so a rebuild installs the newest ones: on 21 November that was `requests` 2.32.5 and `openai` 2.48.0 (`pip freeze` shows the rest).
 - Wrangler is pinned to the site's version, and its install scripts (esbuild, workerd) are denied in `allowScripts`, as on the site.
 
 ## Deploying

@@ -7,12 +7,12 @@ The models are stand-ins: simple text rules, not AI. Everything around them beha
 - `src/index.js`: the whole API, one file with no dependencies. The documentation page at `/` follows the site: the same header (name and About, linking back to the main site) and footer, and the card opened up in the record sleeve styling. Its CSS is a copy of the parts of the site's `src/styles/base.css` and `theme.css` (in `~/Dev/personal-blog`) it uses, so a change to the site's colours needs copying here too.
 - `public/`: static files Cloudflare serves without running the Worker. The fonts are copies of the latin files from `@fontsource/charis-sil` and `@fontsource/ibm-plex-sans` 5.3.0, the favicon is the site's, and `_headers` adds the noindex header to all of them.
 - `wrangler.jsonc`: deploys it as its own Worker, `lyubomirevtimov-lab`, on the subdomain.
+- `practice/`: the customer's side, with two Python tools, eight tickets and the hints. Start with `practice/README.md`.
+- `exercises/`: other practice that isn't part of the API. `token-usage/` is a log of 300 requests (`requests.jsonl`) and a script that totals the tokens per user and prints the top three (`test.py`), done on 13 November 2026.
 
 ## Kept out of search results
 
 The same way as the site: crawlers may read everything, and every response says `noindex`. The Worker adds an `X-Robots-Tag: noindex, nofollow` header to all its responses (JSON and errors included), `public/_headers` adds it to the static files, and the page carries a robots meta tag as well. `robots.txt` allows crawling on purpose. A crawler blocked by `robots.txt` never fetches the page, so it never sees the `noindex`, and a search engine can then still list the bare address if another page links to it. The AI policy is the site's: Cloudflare's crawler settings apply to the whole domain, subdomains included.
-- `practice/`: the customer's side, with two Python tools, eight tickets and the hints. Start with `practice/README.md`.
-- `exercises/`: other practice that isn't part of the API. `token-usage/` is a log of 300 requests (`requests.jsonl`) and a script that totals the tokens per user and prints the top three (`test.py`), done on 13 November 2026.
 
 ## How it relates to the site
 
