@@ -6,7 +6,7 @@ Background on Lyubomir (his work, boundaries and languages) is in `~/Dev/persona
 
 ## Where it came from
 
-Until 21 November 2026 this was `lab/` inside the website's repository (`~/Dev/personal-blog`). It was split off into this folder so the course can be worked on without touching the site, and its Git history came with it (two commits, from 12 and 14 November). This repository is **local only**: there's no GitHub remote yet, so a lost Mac loses it. Adding a private remote is his call.
+Until 21 November 2026 this was `lab/` inside the website's repository (`~/Dev/personal-blog`). It was split off into this folder so the course can be worked on without touching the site, and its Git history came with it (two commits, from 12 and 14 November). Since 21 November 2026 it's a **public** GitHub repository, https://github.com/ThotusPrime/lyubomirevtimov-lab, under his account ThotusPrime (`origin`, over SSH). Its commits show `code@lyubomirevtimov.com`, his global Git email, so anyone can read it there. **Push only `main`**, never `--all`, `--tags` or `--mirror`: the split brought 25 `design/*` tags with it, and they carry the private site repository's whole history.
 
 The chats it was made in:
 
@@ -22,7 +22,16 @@ The chats it was made in:
 - **The course is done with AI assistants switched off**, as in the interview (`practice/README.md`). When he works a ticket here, don't hand him the fix. Point him to the method in the practice README, or to `HINTS.md` one level at a time, unless he asks for the answer.
 - **His work on the tickets stays out of Git**, so the tickets stay broken for practice. Each fix goes in a copy beside the original (`ask_fixed.py` and so on), and the tool output in `results*.csv`, both ignored by `.gitignore`. Never edit or commit the original ticket files to hold a solution.
 - **Status as of 21 November 2026:** fixed copies exist for tickets 1 to 4, which may not be finished, and none for 5 to 8. They exist only on his Mac.
-- **Planned: finish the tickets, then a certificate page on the site.** Once the tickets are done, he wants a page on lyubomirevtimov.com that works as a real certificate for this training: one of his own, which describes the course and how it can be checked. It must not imitate or pretend to be any real certificate issuer. Nothing about it is built or decided yet, including what counts as proof that the work was done. The fixed copies and results are his only record of it so far. The page itself belongs to the site's repository, not this one.
+- **A certificate is undecided.** On 14 November he planned a page on lyubomirevtimov.com that works as a real certificate for this training: one of his own, which describes the course and how it can be checked, and never imitates any real certificate issuer. On 21 November he said he hasn't settled what to do about it, so build nothing for it until he does. The fixed copies and results are his only record of the work so far. Any such page belongs to the site's repository, not this one.
+
+## Where it's going
+
+Decided on 21 November 2026: once he has finished the course, the lab becomes a **free product** that anyone can download from GitHub and run on their own machine. Until then, the live demo stays exactly as it is.
+
+- **The live demo stays unchanged while he works through it**, current keys included. Don't rotate the keys, change the live page or redeploy for this plan until he says he's done.
+- **Learners will make their own keys.** A setup command (`npm run setup`) will generate two random keys and write `.dev.vars` (the `LAB_KEYS` JSON, practice and trial accounts) and `practice/.env`, including `LAB_BASE_URL=http://localhost:8788/v1`. It must never overwrite files that already exist. The reason: the Worker counts the rate limit per account (`account.id`), so a key published for the live lab would put every learner in one shared allowance and on one shared free-plan daily quota. Local keys also keep the course's habit that keys never go in Git. Not built yet.
+- **The live page will point to the repository.** It will say the documentation applies, but that trying the lab means downloading the repository from GitHub and running it locally, with a link. Not written yet, and it needs the repository to exist first.
+- **Once he's done, harden the live demo.** Before it's presented as a product, review the live Worker for vulnerabilities and remove them. The starting points: its keys (rotate them, since they've been in use throughout the practice and may have been pasted into chats), what anyone can do with it, abuse of the free plan's daily quota, and the response headers. Nothing is decided beyond that.
 
 ## Running it
 
@@ -46,6 +55,6 @@ The chats it was made in:
 ## How to work on this project
 
 - **Publish no internal company data**, the same rule as the site: no real tickets, incidents, identifiers, figures or names from his employer. The tickets here are invented.
-- **No AI attribution in Git history**: no `Co-Authored-By: Claude` trailer or similar in commit messages.
+- **No AI attribution in Git or on GitHub**: no `Co-Authored-By: Claude` trailer or similar in commit messages, and no "Generated with Claude Code" line or other credit in pull request titles or descriptions. Claude is credited on the site and in the lab's final documentation, which he'll have written once he's finished the course.
 - **Stage files by name when committing**, never `git add .` or `git add -A`, so no keys or ticket work get swept in.
 - He uses British spelling, and he will maintain this himself, so explain the trade-offs behind technical choices.
