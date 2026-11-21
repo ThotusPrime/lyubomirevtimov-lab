@@ -2,11 +2,13 @@
 
 Open a hint only after five minutes stuck. Each ticket has three levels: a nudge, the commands that help, then the cause and the fix. Open them in that order and stop as soon as you can carry on alone.
 
+Tickets 1 to 4 also end with model answers to their **Explain it** questions. Open those only after you've written your own.
+
 ## 0. Getting the key into your shell
 
 <details><summary>Nudge</summary>
 
-The scripts read `LAB_API_KEY` from the environment, the same way a Laravel command reads its `.env` through the framework. Python doesn't read a `.env` file on its own; something has to put the values into the shell first. Check what the shell has now before changing anything.
+The scripts read `LAB_API_KEY` from the environment. Python doesn't read a `.env` file on its own, and neither does the shell; something has to put the values into the shell first. Check what the shell has now before changing anything.
 
 </details>
 
@@ -66,7 +68,13 @@ The header is `Authorization: <key>`, without the `Bearer ` scheme. The API answ
 
 Fix: `headers={"Authorization": f"Bearer {api_key}"}`.
 
-**Reply:** "Your key is valid; the header was missing the word Bearer. It needs to be `Authorization: Bearer <key>`. Here's the one-line change."
+</details>
+
+<details><summary>Model answers</summary>
+
+1. The key was never checked. The API reads the header as a scheme followed by the credentials, and a bare key has no scheme, so it refuses the request before it looks at the key. The error body says so: `invalid_auth_scheme`.
+2. One header serves several ways of authenticating, such as `Basic` for a username and password, or `Bearer` for a token. The scheme tells the server how to read what follows. `Bearer` means whoever holds the token is let in, which is also why a leaked key is as good as a stolen one.
+3. Still `401`, so the status alone can't tell them apart. The body can: the code becomes `invalid_api_key`, and the message shows the start and end of the key that was sent, masked, so you can compare it with the right one without printing the whole key.
 
 </details>
 
@@ -92,7 +100,13 @@ The URL is fine. The script's default model is `lab/legacy-chat`, which was reti
 
 Fix: change the default model, or pass `--model lab/small`.
 
-**Reply:** explain that the model was retired on 1 October and `lab/small` replaced it. Then the useful part: print the error body when a call fails, so the next change explains itself instead of showing a bare 404.
+</details>
+
+<details><summary>Model answers</summary>
+
+1. The model, not the URL. The error body says `lab/legacy-chat` was retired on 1 October and names `lab/small` as its replacement, and `GET /v1/models` no longer lists it.
+2. A `404` here means either a route that doesn't exist or a model that doesn't exist. The error body tells them apart: the code is `unknown_route` or `model_not_found`, and for a model, `param` is `"model"`.
+3. Print or log the status and the error body whenever a call fails, instead of only raising. The first failed night would then have said that the model was retired and what replaces it, and the fix would have taken a minute.
 
 </details>
 
@@ -118,7 +132,13 @@ The script sends `data=json.dumps(payload)`. That sends the right text, but with
 
 Fix: `json=payload`, which turns the dictionary into JSON and sets the header. Then add `response.raise_for_status()`, or better, print the body when the status isn't 200, before reading `choices`.
 
-**Reply:** the API's format hasn't changed. The request was missing its JSON content type, so the response was an error, not an answer. Here's the fix, and a check so errors show up as errors.
+</details>
+
+<details><summary>Model answers</summary>
+
+1. A `415` with an error body, `{"error": {...}}`, saying the body must be JSON with `Content-Type: application/json`. The script never checked the status, so it read the error as if it were an answer, and an error has no `choices`.
+2. `data=` sends whatever you give it as it is, and a string gets no `Content-Type`. `json=` turns the dictionary into JSON and sets `Content-Type: application/json`. The header tells the server how to read the body, and this API refuses to guess.
+3. Check the status before reading the body: `raise_for_status()`, or print the status and body when it isn't 200. Here it would have printed the `415` and the API's message about the content type, instead of `KeyError: 'choices'`.
 
 </details>
 
@@ -144,7 +164,13 @@ The limit is 5 chat completions per 10 seconds per account. Three rows never hit
 
 Fix: when the status is 429, wait `Retry-After` seconds and try the same row again, with a cap on the attempts. The happy-path `batch.py` in `practice/` does exactly this, if you want to compare.
 
-**Reply:** the service is stable; they're reaching the rate limit, which is 5 requests per 10 seconds. Every 429 says how long to wait in `Retry-After`. Retrying after that wait makes the job finish. If they need more throughput, that's a conversation about their plan.
+</details>
+
+<details><summary>Model answers</summary>
+
+1. The limit is 5 chat completions per 10 seconds per account, and the script sends as fast as answers come back. Three rows never reach the limit; the real file reaches it on the sixth request.
+2. `429 Too Many Requests` means the client sent too much in a window, not that the service is down. `Retry-After` is the server saying how long to wait, here in seconds, before trying again.
+3. The limit belongs to the server. A pause after every five requests hard-codes it, so it breaks when the limit changes or differs between plans, and it can't see other scripts using the same key, which share the same allowance. `Retry-After` follows what the server actually says. Either way, cap the attempts, so a problem that won't clear doesn't loop forever.
 
 </details>
 
@@ -256,7 +282,7 @@ The OpenAI SDK reads `OPENAI_API_KEY` by default. The key is in `LAB_API_KEY`, a
 
 Fix: `client = OpenAI(base_url="https://lab.lyubomirevtimov.com/v1", api_key=os.environ["LAB_API_KEY"])`, with `import os` at the top.
 
-If your shell has an `OPENAI_API_KEY` of its own, the SDK sends that key to the lab instead, and you get a 401 with a masked `sk-...` key in the message. That's the same mistake from the other side, and a nasty one, because the customer's OpenAI key leaves their machine for the wrong provider.
+If your shell has an `OPENAI_API_KEY` of its own, the SDK sends that key to the lab instead, and you get a 401 with a masked `sk-...` key in the message. That's the same mistake from the other side, and a nasty one, because their OpenAI key leaves their machine for the wrong provider.
 
 **The other thing teams trip over:** model names. OpenAI's model names don't exist here, so a leftover model name gives `404 model_not_found`. `GET /v1/models` lists the right ones.
 

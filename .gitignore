@@ -18,3 +18,4 @@ practice/.venv/
 __pycache__/
 results*.csv
 *_fixed.py
+practice/LOG.md

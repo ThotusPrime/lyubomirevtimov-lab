@@ -1,6 +1,6 @@
 # Bonus ticket 7: "Streaming broke our script"
 
-**From:** a chatbot startup in Prague
+**From:** a team building a chatbot
 **Priority:** normal
 
 > We turned on streaming because your docs say answers start sooner. Now the script crashes on every call. Turning it off again fixes it, but we want streaming.

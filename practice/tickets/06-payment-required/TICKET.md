@@ -1,6 +1,6 @@
 # Ticket 6: "Payment required?"
 
-**From:** a two-person startup in Sofia, signed up last week
+**From:** two people testing the API, signed up last week
 **Priority:** normal
 
 > We were testing yesterday and everything worked. Today every request fails with this. We haven't changed anything.
@@ -15,4 +15,4 @@
 
 **Their script:** `ask.py` in this folder. Their key is `LAB_TRIAL_KEY` in your `.env`. Run the script with their key instead of yours, without changing your own `LAB_API_KEY` for the rest of the session.
 
-**Your job:** find out what's wrong. This one may not be a code problem. Write the reply you'd send them.
+**Your job:** find out what's wrong. This one may not be a code problem. Explain it in two or three lines, as if to them.

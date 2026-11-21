@@ -1,7 +1,7 @@
 # Ticket 4: "It dies halfway through"
 
-**From:** an e-commerce startup in Lisbon, on the pay-as-you-go plan
-**Priority:** high, their reporting is late
+**From:** a reporting team
+**Priority:** high, their report is late
 
 > Our batch job worked fine in testing with three rows. With the real file it processes about five rows and then crashes, every time. Is your service unstable?
 >
@@ -22,4 +22,12 @@
 
 **Their script:** `batch.py` and `prompts.csv`, in this folder.
 
-**Your job:** explain what's happening, change their script so it finishes the whole file, and tell them what the API told them that their script ignored.
+**Your job:** find what's happening, and change their script so it finishes the whole file.
+
+**Done when:** their original command finishes every row of `prompts.csv`, and an error other than the rate limit still stops it.
+
+**Explain it:**
+
+1. Why did three rows work, and why does the real file fail at about the sixth?
+2. What is a 429 telling the client, and what is `Retry-After` for?
+3. Why is waiting for `Retry-After` better than pausing after every five requests?

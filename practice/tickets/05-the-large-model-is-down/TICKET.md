@@ -1,6 +1,6 @@
 # Ticket 5: "The large model is down"
 
-**From:** a research startup in Dublin
+**From:** a research team
 **Priority:** high
 
 > `lab/small` works, `lab/large` never does. It's been like this all day. Is the large model down?
@@ -15,4 +15,4 @@
 
 **Their script:** `ask.py` in this folder.
 
-**Your job:** prove whether the model is up, find the cause, and fix it in a way that doesn't make every request wait forever.
+**Your job:** prove whether the model is up, find the cause, and fix it in a way that doesn't make every request wait forever. Then explain the cause in two or three lines, as if to whoever reported it.

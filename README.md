@@ -1,14 +1,14 @@
 # The lab
 
-A practice inference API at **https://lab.lyubomirevtimov.com**, built on 12 November 2026 to practise for a terminal troubleshooting interview. It copies the shape of an OpenAI-compatible inference API (the kind DeepInfra sells): list the models, check the account, send messages to a model and get an answer with its token count and cost.
+A practice inference API at **https://lab.lyubomirevtimov.com**, and a crash course built around it in troubleshooting an API from the terminal and from code. The API copies the shape of an OpenAI-compatible inference API, the kind behind most AI features: list the models, check the account, send messages to a model and get an answer with its token count and cost.
 
 The models are stand-ins: simple text rules, not AI. Everything around them behaves like a real API, and each failure has its own status code: authentication (401), billing (402), unknown routes and models (404), content type (415), validation (422), a rate limit (429 with `Retry-After`), latency, and streaming.
 
 - `src/index.js`: the whole API, one file with no dependencies. The documentation page at `/` follows the site: the same header (name and About, linking back to the main site) and footer, and the card opened up in the record sleeve styling. Its CSS is a copy of the parts of the site's `src/styles/base.css` and `theme.css` (in `~/Dev/personal-blog`) it uses, so a change to the site's colours needs copying here too.
 - `public/`: static files Cloudflare serves without running the Worker. The fonts are copies of the latin files from `@fontsource/charis-sil` and `@fontsource/ibm-plex-sans` 5.3.0, the favicon is the site's, and `_headers` adds the noindex header to all of them.
 - `wrangler.jsonc`: deploys it as its own Worker, `lyubomirevtimov-lab`, on the subdomain.
-- `practice/`: the customer's side, with two Python tools, eight tickets and the hints. Start with `practice/README.md`.
-- `exercises/`: other practice that isn't part of the API. `token-usage/` is a log of 300 requests (`requests.jsonl`) and a script that totals the tokens per user and prints the top three (`test.py`), done on 13 November 2026.
+- `practice/`: the course, with two Python tools, eight tickets, the hints and a tester prompt. Start with `practice/README.md`.
+- `exercises/`: other practice that isn't part of the API. `token-usage/` is a log of 300 requests (`requests.jsonl`) and a script that totals the tokens per user and prints the top three (`test.py`).
 
 ## Kept out of search results
 
@@ -40,5 +40,5 @@ From this folder, after `eval "$(fnm env --shell zsh)" && fnm use` (and `npm ci`
 - **Locally:** `npm run dev` (it reads `.dev.vars`), then point the tools at it with `export LAB_BASE_URL=http://localhost:8788/v1`.
 - **Deploy:** `npm run deploy` (the same as `npx wrangler deploy`). The first deploy also created the subdomain and its DNS record.
 - **Upload the keys:** `npx wrangler secret bulk .dev.vars`, whenever the keys change.
-- **Server logs:** `npm run tail` prints one JSON line per request (request id, path, account, model, status). It's the server's view of a customer's call, the way a support engineer would look up a request id.
+- **Server logs:** `npm run tail` prints one JSON line per request (request id, path, account, model, status). It's the server's view of a call, the way an API provider looks up a request id someone quotes to them.
 - **Take it down:** `npx wrangler delete`. That removes the Worker and its subdomain; the site isn't affected.

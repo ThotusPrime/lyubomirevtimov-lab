@@ -2,7 +2,7 @@
  * The lab: a practice inference API on lab.lyubomirevtimov.com.
  *
  * It copies the shape of an OpenAI-compatible inference API, the kind
- * DeepInfra and others sell: list the models, check the account, send
+ * behind most AI features: list the models, check the account, send
  * messages to a model and get an answer back with its token count and cost.
  * The models are stand-ins (simple text rules, not AI). Everything around
  * them behaves like a real API: authentication, validation, billing, a rate
