@@ -8,11 +8,12 @@ Usage:
     python3 ask_sdk.py "Your question or text"
 """
 
+import os
 import sys
 
 from openai import OpenAI
 
-client = OpenAI(base_url="https://lab.lyubomirevtimov.com/v1")
+client = OpenAI(base_url=os.environ.get("LAB_BASE_URL", "https://lab.lyubomirevtimov.com/v1"))
 
 
 def main():

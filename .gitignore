@@ -19,3 +19,9 @@ __pycache__/
 results*.csv
 *_fixed.py
 practice/LOG.md
+
+# The lab's log, if you save it with `npm run dev 2>&1 | tee lab.log`
+*.log
+
+# Your script for an exercise
+exercises/*/solution.py

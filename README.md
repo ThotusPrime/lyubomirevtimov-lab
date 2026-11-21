@@ -7,8 +7,9 @@ The models are stand-ins: simple text rules, not AI. Everything around them beha
 - `src/index.js`: the whole API, one file with no dependencies. The documentation page at `/` follows the site: the same header (name and About, linking back to the main site) and footer, and the card opened up in the record sleeve styling. Its CSS is a copy of the parts of the site's `src/styles/base.css` and `theme.css` (in `~/Dev/personal-blog`) it uses, so a change to the site's colours needs copying here too.
 - `public/`: static files Cloudflare serves without running the Worker. The fonts are copies of the latin files from `@fontsource/charis-sil` and `@fontsource/ibm-plex-sans` 5.3.0, the favicon is the site's, and `_headers` adds the noindex header to all of them.
 - `wrangler.jsonc`: deploys it as its own Worker, `lyubomirevtimov-lab`, on the subdomain.
-- `practice/`: the course, with two Python tools, eight tickets, the hints and a tester prompt. Start with `practice/README.md`.
-- `exercises/`: other practice that isn't part of the API. `token-usage/` is a log of 300 requests (`requests.jsonl`) and a script that totals the tokens per user and prints the top three (`test.py`).
+- `practice/`: the course, with two Python tools, ten tickets, the concepts, the hints and a tester prompt. Start with `practice/README.md`.
+- `scripts/setup.mjs`: `npm run setup`, which makes a learner's own keys (below).
+- `exercises/`: practice that isn't a call to the API. `token-usage/` is a log of 300 requests (`requests.jsonl`) and a brief: write the script that finds who used the most tokens, and spot what in the log would make a total wrong.
 
 ## Kept out of search results
 
@@ -24,21 +25,23 @@ None. It runs on the Workers Free plan: no storage, no AI models, nothing billed
 
 ## Keys
 
-The API keys live in the Worker's `LAB_KEYS` secret, never in this repository. Two files Git ignores hold the copies: `.dev.vars` has the whole secret, and `practice/.env` has the two keys the tools use. The secret is JSON, in this shape:
+Every learner makes their own keys with `npm run setup`. It writes two files Git ignores: `.dev.vars`, the `LAB_KEYS` secret that `npm run dev` reads, and `practice/.env`, the two keys the tools use plus `LAB_BASE_URL=http://localhost:8788/v1`. It never overwrites either file, and stops if only one of them exists, because new keys in one wouldn't match the other. Own keys matter because the lab counts its rate limit per account: a shared key would put everyone in one allowance.
+
+The live lab's keys live in the Worker's `LAB_KEYS` secret, never in this repository. The secret is JSON, in this shape:
 
 ```
 {"<key>": {"id": "acct_practice", "plan": "pay-as-you-go", "balance": 25},
  "<key>": {"id": "acct_trial", "plan": "trial", "balance": 0}}
 ```
 
-To change the keys, edit both files, then upload the secret again (below).
+To change the live lab's keys, edit both files, then upload the secret again (below).
 
 ## Running and deploying
 
 From this folder, after `eval "$(fnm env --shell zsh)" && fnm use` (and `npm ci` the first time):
 
-- **Locally:** `npm run dev` (it reads `.dev.vars`), then point the tools at it with `export LAB_BASE_URL=http://localhost:8788/v1`.
+- **Locally:** `npm run setup` once, then `npm run dev` (it reads `.dev.vars`). A `practice/.env` made by setup already points the tools at it; with an older one, `export LAB_BASE_URL=http://localhost:8788/v1`.
 - **Deploy:** `npm run deploy` (the same as `npx wrangler deploy`). The first deploy also created the subdomain and its DNS record.
 - **Upload the keys:** `npx wrangler secret bulk .dev.vars`, whenever the keys change.
-- **Server logs:** `npm run tail` prints one JSON line per request (request id, path, account, model, status). It's the server's view of a call, the way an API provider looks up a request id someone quotes to them.
+- **Server logs:** every request prints one JSON line (request id, path, account, model, status, and the error code when it fails): in the `npm run dev` terminal locally, and through `npm run tail` for the live lab. It's the server's view of a call, the way an API provider looks up a request id someone quotes to them. Ticket 8 is built on it.
 - **Take it down:** `npx wrangler delete`. That removes the Worker and its subdomain; the site isn't affected.

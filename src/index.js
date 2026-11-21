@@ -60,6 +60,13 @@ export default {
 			response = apiError(500, 'server_error', 'internal_error', 'Something went wrong on our side. Quote the request id if you contact support.');
 		}
 
+		// Log an error's code next to its status, as a provider's own logs would,
+		// so a request id quoted later says what went wrong.
+		if (response.status >= 400) {
+			const failure = await response.clone().json().catch(() => null);
+			if (failure && failure.error && failure.error.code) log.error = failure.error.code;
+		}
+
 		const headers = new Headers(response.headers);
 		headers.set('x-request-id', requestId);
 		headers.set('X-Robots-Tag', 'noindex, nofollow');

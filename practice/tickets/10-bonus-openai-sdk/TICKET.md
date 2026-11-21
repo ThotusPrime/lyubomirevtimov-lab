@@ -1,4 +1,4 @@
-# Bonus ticket 8: "We switched from OpenAI and nothing works"
+# Bonus ticket 10: "We switched from OpenAI and nothing works"
 
 **From:** a team moving over from OpenAI
 **Priority:** high, the move is due this week
@@ -16,3 +16,11 @@
 **Their script:** `ask_sdk.py` in this folder. It needs the `openai` package, which is in `requirements.txt`.
 
 **Your job:** make it work, and find the one other thing a team moving from OpenAI usually trips over. (If you have an `OPENAI_API_KEY` of your own set in your shell, you'll see a different error from theirs. Work out why that is too.)
+
+**Done when:** their original command prints an answer, with the key still only in `LAB_API_KEY`.
+
+**Explain it:**
+
+1. Why did it fail before sending anything, and why is there no status code?
+2. What happens instead if your shell has an `OPENAI_API_KEY` of its own, and why is that worse than the error they got?
+3. What's the other thing teams moving from OpenAI trip over, and how would you find the right value here?

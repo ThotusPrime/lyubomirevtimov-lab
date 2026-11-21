@@ -14,8 +14,11 @@ Fill in a row as you finish each ticket. In the hints column, note the deepest l
 | 4 | It dies halfway through | | | | | |
 | 5 | The large model is down | | | | | |
 | 6 | Payment required? | | | | | |
-| 7 | Bonus: streaming broke our script | | | | | |
-| 8 | Bonus: we switched from OpenAI | | | | | |
+| 7 | It breaks when we set a limit | | | | | |
+| 8 | All we have is the request id | | | | | |
+| 9 | Bonus: streaming broke our script | | | | | |
+| 10 | Bonus: we switched from OpenAI | | | | | |
+| | The usage spike | | | | | |
 
 ## Commands I had to look up
 

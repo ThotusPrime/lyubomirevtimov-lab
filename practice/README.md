@@ -9,7 +9,7 @@ By the end you'll be able to:
 - tell whether a problem is in the request, the traffic, the account or the protocol
 - explain what went wrong and why, not only fix it
 
-The skills carry over to any HTTP API. You need a terminal, Python 3 and curl, and no knowledge of this API beforehand: its documentation is at https://lab.lyubomirevtimov.com/. The commands are written for macOS and Linux. On Windows, use WSL and they work as written.
+The skills carry over to any HTTP API. You need a terminal, Git, Node.js 24 (the exact version is in `.nvmrc`, and nvm or fnm will install it), Python 3 and curl, and no knowledge of this API beforehand. The commands are written for macOS and Linux. On Windows, use WSL and they work as written.
 
 ## How it works
 
@@ -17,9 +17,23 @@ Each ticket is a report from someone whose script fails: their command, their er
 
 **Work with AI assistants switched off while you solve a ticket.** Reading the error yourself is the skill this course teaches, and an assistant would do that step for you. Built-in help (`--help`, `man`, Python's `help()`) is allowed, and learning to use it is part of the point. Once you've answered a ticket's questions, an AI assistant is welcome back as your tester: `TESTER.md` has a prompt that makes it question you without giving the answers away.
 
-## 1. Set up (about 10 minutes)
+## 1. Get your own lab running (about 10 minutes)
 
-From this folder:
+You run the lab yourself, on your own computer, with keys only you have. From wherever you keep projects:
+
+```
+git clone https://github.com/ThotusPrime/lyubomirevtimov-lab.git
+cd lyubomirevtimov-lab
+npm ci
+npm run setup
+npm run dev
+```
+
+`npm run setup` makes two keys and writes them to two files Git ignores: `.dev.vars` for the lab and `practice/.env` for you. It never overwrites them, so running it again is safe. `npm run dev` starts the lab on http://localhost:8788 and keeps running: leave that terminal open, because the lab's log appears there, and open a second terminal for everything else. Open http://localhost:8788/ in a browser for the API's documentation.
+
+## 2. Set up Python
+
+In the second terminal, from the `practice` folder:
 
 ```
 python3 -m venv .venv
@@ -29,11 +43,11 @@ pip install -r requirements.txt
 
 Check it worked: `which python3` should point inside `.venv`. A new terminal window starts without the venv, so activate it again there. If a script says `ModuleNotFoundError: No module named 'requests'`, this is why.
 
-## 2. Exercise 0: get your key into the shell
+## 3. Exercise 0: get your keys into the shell
 
-Your keys are in `.env` in this folder (it stays out of Git): `LAB_API_KEY` for your own account, and `LAB_TRIAL_KEY` for one of the tickets. The tools read `LAB_API_KEY` from the environment. Getting it there is the first exercise. Hint 0 in `HINTS.md` if you're stuck.
+Your keys are in `.env` in this folder: `LAB_API_KEY` for your own account, `LAB_TRIAL_KEY` for one of the tickets, and `LAB_BASE_URL`, which sends the tools to your own lab. The tools read them from the environment. Getting them there is the first exercise. Hint 0 in `HINTS.md` if you're stuck.
 
-## 3. The happy path
+## 4. The happy path
 
 See what working looks like before anything breaks.
 
@@ -45,18 +59,21 @@ python3 batch.py prompts.csv results.csv
 
 The batch takes about half a minute and pauses once or twice with "rate limited, waiting 10s". That's it working: it hits the limit, waits as the API says, and carries on.
 
-Then make the same calls with curl, written from memory: list the models, then send one chat completion. Reference at the end of hint 0. Open https://lab.lyubomirevtimov.com/ in a browser for the API's documentation page.
+Then make the same calls with curl, written from memory: list the models, then send one chat completion. Reference at the end of hint 0, and the API's documentation at http://localhost:8788/.
 
-## 4. The tickets
+Before the tickets, read `CONCEPTS.md`: what a request and a response are made of, status codes, the headers worth knowing, JSON and environment variables.
 
-Do 1 to 6 in order. 7 and 8 are bonuses. Most take 15 to 30 minutes, the first ones longer.
+## 5. The tickets
+
+Do 1 to 8 in order. 9 and 10 are bonuses. Most take 15 to 30 minutes, the first ones longer.
 
 | Layer | What you look at | Tickets |
 |---|---|---|
-| The request | What the script sends: its headers, its body, the names in it | 1, 2, 3 |
+| The request | What the script sends: its headers, its body, the names and values in it | 1, 2, 3, 7 |
 | Traffic and time | How often it sends, and how long it waits | 4, 5 |
 | The account | What the key is allowed to do | 6 |
-| The protocol | Responses and libraries that don't work the way the script expects | 7, 8 |
+| The server's side | What the API's own log knows that the response didn't say | 8, and the usage exercise |
+| The protocol | Responses and libraries that don't work the way the script expects | 9, 10 (bonus) |
 
 For each one:
 
@@ -68,9 +85,11 @@ For each one:
 6. Answer the questions under **Explain it** in writing, before you look at anything. Then compare with the model answers at the end of that ticket's hints, or have the tester in `TESTER.md` question you.
 7. Note it in your log: `cp LOG.template.md LOG.md` once, then a row for each ticket. Git ignores `LOG.md`.
 
-Tickets 5 to 8 don't have their questions yet. For those, write down the cause and the fix in two or three lines, as if explaining them to whoever reported it.
-
 Open `HINTS.md` only after five minutes stuck, one level at a time.
+
+## 6. The usage exercise
+
+`../exercises/token-usage/` has no broken script. It has a log of 300 requests and a question about who's using the most tokens, and you write the script that answers it. Do it after ticket 8. It works the same way: a **Done when** line, **Explain it** questions, and hints at the end of `HINTS.md`.
 
 ## The method
 
