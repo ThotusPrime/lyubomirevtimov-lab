@@ -1,9 +1,9 @@
 // The lab: a practice inference API, deployed as its own Worker so it never
-// touches the site. Deploy from the repository root with
-//   npx wrangler deploy -c lab/wrangler.jsonc
-// Workers Builds deploys only the site (the root wrangler.jsonc), not this.
+// touches the site. Deploy from this folder with
+//   npx wrangler deploy
+// Nothing deploys it automatically: there's no Workers Builds for this repository.
 {
-	"$schema": "../node_modules/wrangler/config-schema.json",
+	"$schema": "./node_modules/wrangler/config-schema.json",
 	"name": "lyubomirevtimov-lab",
 	"main": "src/index.js",
 	"compatibility_date": "2026-11-08",
@@ -28,6 +28,6 @@
 		}
 	]
 	// The API keys live in the LAB_KEYS secret, never in this repository:
-	//   npx wrangler secret put LAB_KEYS -c lab/wrangler.jsonc
+	//   npx wrangler secret put LAB_KEYS
 	// Its value is JSON: {"<key>": {"id": "acct_…", "plan": "…", "balance": 25}}
 }

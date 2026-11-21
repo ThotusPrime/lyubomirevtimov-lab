@@ -1,8 +1,17 @@
 # The practice keys and local Worker secrets stay out of Git
-# (the root .gitignore covers .env and .dev.vars too; this is a second net).
 .env
+.env.*
 .dev.vars*
 .wrangler/
+
+# Dependencies
+node_modules/
+
+# Local Claude Code settings
+.claude/settings.local.json
+
+# macOS
+.DS_Store
 
 # The practice virtual environment and what the tools write
 practice/.venv/

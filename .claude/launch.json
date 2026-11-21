@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "lab-dev",
+      "runtimeExecutable": "zsh",
+      "runtimeArgs": [
+        "-c",
+        "eval \"$(fnm env --shell zsh)\" && fnm use && npm run dev"
+      ],
+      "port": 8788
+    }
+  ]
+}
