@@ -2,7 +2,7 @@
 
 Open a hint only after five minutes stuck. Each ticket has three levels: a nudge, the commands that help, then the cause and the fix. Open them in that order and stop as soon as you can carry on alone.
 
-Every ticket also ends with model answers to its **Explain it** questions. Open those only after you've written your own.
+Every ticket also ends with model answers to its **Explain it** questions. Open those only after you've checked yourself against the questions and written answers for any your work left open.
 
 ## 0. Getting the key into your shell
 
