@@ -6,11 +6,11 @@
  */
 
 import { COURSES } from './courses/index.js';
-import { esc, page, shortDate } from './frame.js';
+import { esc, LAB, page, shortDate } from './frame.js';
 
 export function hub(url) {
-	const rows = [...COURSES]
-		.sort((a, b) => b.published.localeCompare(a.published))
+	const newestFirst = [...COURSES].sort((a, b) => b.published.localeCompare(a.published));
+	const rows = newestFirst
 		.map(
 			(c) => `<li class="message">
 		<h2 class="message-title"><a href="/${esc(c.slug)}/">${esc(c.title)}</a></h2>
@@ -24,6 +24,12 @@ export function hub(url) {
 	return page({
 		url,
 		description: 'Courses for learning a technical skill by doing it, free to download and run on your own computer.',
+		// The list of courses, the form search engines read a page of courses in.
+		structured: {
+			'@type': 'ItemList',
+			name: 'The lab',
+			itemListElement: newestFirst.map((c, i) => ({ '@type': 'ListItem', position: i + 1, url: `${LAB}/${c.slug}/` })),
+		},
 		body: `<header class="hub-head">
 	<h1 class="hub-title">The lab</h1>
 	<p class="hub-intro">Courses I've built for learning a technical skill by doing it, each one free to download and run on your own computer.</p>

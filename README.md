@@ -15,20 +15,26 @@ The same Worker serves the live hub and every learner's own copy, started with `
 | `/troubleshooting-an-api/docs/` | The practice API's reference | the same file |
 | `/v1/...` | The practice API | `src/api.js` |
 
-- `src/index.js`: the entry point. It sends page addresses to their pages and everything else to the API, adds the request id and noindex header to every response, and logs each request. An address with no page gets an HTML 404 in a browser and the API's JSON 404 everywhere else, so curl and scripts still hear that API routes start with `/v1/`.
+- `src/index.js`: the entry point. It sends page addresses to their pages and everything else to the API, adds the request id to every response and a noindex header to everything but the pages and the sitemap, serves `/sitemap.xml`, and logs each request. An address with no page gets an HTML 404 in a browser and the API's JSON 404 everywhere else, so curl and scripts still hear that API routes start with `/v1/`.
 - `src/frame.js`: what every page shares: the head, the main site's header (his name and About) and footer, and the 404 page.
 - `src/courses/index.js`: the list of courses. Adding one means writing its module beside it and adding it there.
-- `public/`: static files Cloudflare serves without running the Worker. `lab.css` is the pages' styles: its first half is a copy of the parts of the site's `src/styles/base.css` and `theme.css` (in `~/Dev/personal-blog`) it uses, so a change to the site's colours needs copying here too, and its second half is the lab's own (the hub's rows and a course's panel). The fonts are copies of the latin files from `@fontsource/charis-sil` and `@fontsource/ibm-plex-sans` 5.3.0, the favicon is the site's, and `_headers` adds the noindex header to all of them.
+- `public/`: static files Cloudflare serves without running the Worker. `lab.css` is the pages' styles: its first half is a copy of the parts of the site's `src/styles/base.css` and `theme.css` (in `~/Dev/personal-blog`) it uses, so a change to the site's colours needs copying here too, and its second half is the lab's own (the hub's rows and a course's panel). The fonts are copies of the latin files from `@fontsource/charis-sil` and `@fontsource/ibm-plex-sans` 5.3.0, the favicon is the site's, and `_headers` adds `nosniff` to all of them. `robots.txt` allows everything and names the sitemap.
 - `wrangler.jsonc`: deploys it as its own Worker, `lyubomirevtimov-lab`, on the subdomain.
 - `practice/`: the troubleshooting course, with two Python tools, ten tickets, the concepts, the hints and a tester prompt. Start with `practice/README.md`.
 - `exercises/`: the course's practice that isn't a call to the API. `token-usage/` is a log of 311 requests (`requests.jsonl`) and a brief: write the script that finds who used the most tokens, and spot what in the log would make a total wrong.
 - `scripts/setup.mjs`: `npm run setup`, which makes a learner's own keys (below).
 
-The pages carry no scripts and load nothing from elsewhere, so they're sent with a strict Content-Security-Policy (in `src/frame.js`).
+The pages carry no scripts and load nothing from elsewhere, so they're sent with a strict Content-Security-Policy (in `src/frame.js`). Their footer names the licence.
 
-## Kept out of search results
+## Search engines
 
-The same way as the site: crawlers may read everything, and every response says `noindex`. The Worker adds an `X-Robots-Tag: noindex, nofollow` header to all its responses (JSON and errors included), `public/_headers` adds it to the static files, and every page carries a robots meta tag as well. `robots.txt` allows crawling on purpose. A crawler blocked by `robots.txt` never fetches the page, so it never sees the `noindex`, and a search engine can then still list the bare address if another page links to it. The AI policy is the site's: Cloudflare's crawler settings apply to the whole domain, subdomains included.
+The pages are open to search engines (since 22 November 2026; before that the whole lab was kept out of their results). Each page has a canonical address on `https://lab.lyubomirevtimov.com`, fixed rather than read from the request, so a learner's local copy still points to the live pages, and a JSON-LD block saying what it is, built only from facts already on the page: the hub is a list of courses, a course page a `Course` (free, by him, under the repository's licence) and its reference a `TechArticle`. `/sitemap.xml`, which the Worker builds from the list of pages, lists them, and `robots.txt` points to it. The API's responses, redirects and 404s carry an `X-Robots-Tag: noindex` header, and the 404 page a robots meta tag, so none of those are listed. The AI crawler policy is the site's: Cloudflare's settings apply to the whole domain, subdomains included.
+
+## Licence
+
+The courses and everything else in this repository are © 2026 Lyubomir Evtimov and licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) (`LICENSE`): free to use, change and share for any purpose, commercial included, as long as you credit him, link to the licence and say what you changed. To credit it, something like: *"Troubleshooting an API" by Lyubomir Evtimov, https://lab.lyubomirevtimov.com/troubleshooting-an-api/, CC BY 4.0.*
+
+The fonts in `public/fonts/` aren't his: they're under the SIL Open Font License 1.1, in `public/fonts/OFL.txt`.
 
 ## How it relates to the site
 
@@ -42,14 +48,14 @@ None. It runs on the Workers Free plan: no storage, no AI models, nothing billed
 
 Every learner makes their own keys with `npm run setup`. It writes two files Git ignores: `.dev.vars`, the `LAB_KEYS` secret that `npm run dev` reads, and `practice/.env`, the two keys the tools use plus `LAB_BASE_URL=http://localhost:8788/v1`. It never overwrites either file, and stops if only one of them exists, because new keys in one wouldn't match the other. Own keys matter because the lab counts its rate limit per account: a shared key would put everyone in one allowance.
 
-The live lab's keys live in the Worker's `LAB_KEYS` secret, never in this repository. The secret is JSON, in this shape:
+A lab with no keys answers every `/v1` request with `503` and `no_keys`, and a message saying to run `npm run setup` and start the lab again. The live lab is meant to have none: every learner runs the API on their own computer, so the live site serves only the pages. Until its `LAB_KEYS` secret is deleted (`npx wrangler secret delete LAB_KEYS`), it still holds the keys used while the course was being built. The secret is JSON, in this shape:
 
 ```
 {"<key>": {"id": "acct_practice", "plan": "pay-as-you-go", "balance": 25},
  "<key>": {"id": "acct_trial", "plan": "trial", "balance": 0}}
 ```
 
-To change the live lab's keys, edit both files, then upload the secret again (below).
+Locally, `.dev.vars` holds the same JSON as one line, `LAB_KEYS=...`.
 
 ## Running and deploying
 
@@ -57,6 +63,5 @@ From this folder, after `eval "$(fnm env --shell zsh)" && fnm use` (and `npm ci`
 
 - **Locally:** `npm run setup` once, then `npm run dev` (it reads `.dev.vars`), and open http://localhost:8788/. The Python tools send their requests to `LAB_BASE_URL`, and to `http://localhost:8788/v1` when it isn't set, so they find the local lab either way. Under `wrangler dev` a request's URL carries the live hostname from the route in `wrangler.jsonc`, not localhost, so the Worker never builds an address from it: redirects are relative, and the pages name `http://localhost:8788` outright.
 - **Deploy:** `npm run deploy` (the same as `npx wrangler deploy`). The first deploy also created the subdomain and its DNS record.
-- **Upload the keys:** `npx wrangler secret bulk .dev.vars`, whenever the keys change.
 - **Server logs:** every request prints one JSON line (request id, path, account, model, status, and the error code when it fails): in the `npm run dev` terminal locally, and through `npm run tail` for the live lab. It's the server's view of a call, the way an API provider looks up a request id someone quotes to them. Ticket 8 is built on it.
 - **Take it down:** `npx wrangler delete`. That removes the Worker and its subdomain; the site isn't affected.

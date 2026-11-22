@@ -8,6 +8,13 @@
 
 const SITE = 'https://lyubomirevtimov.com';
 
+// The lab's own address, for canonical links, the sitemap and structured
+// data. It's fixed rather than read from the request, so a learner's local
+// copy still names the live pages as the ones that count.
+export const LAB = 'https://lab.lyubomirevtimov.com';
+export const LICENCE = 'https://creativecommons.org/licenses/by/4.0/';
+export const AUTHOR = { '@type': 'Person', name: 'Lyubomir Evtimov', url: SITE + '/' };
+
 // Pages carry no scripts and load nothing from anywhere else, so the policy
 // can be the strictest one: styles, fonts and the favicon from the lab itself.
 const PAGE_HEADERS = {
@@ -29,20 +36,24 @@ export function shortDate(iso) {
 	return new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 }
 
-export function page({ url, title, description, body, status = 200 }) {
+// A page in the frame. `structured` is what the page is, for search engines
+// (schema.org, as JSON-LD), built only from facts already on the page.
+// `noindex` keeps a page out of search results, for the 404 page.
+export function page({ url, title, description, body, status = 200, structured, noindex = false }) {
 	const fullTitle = title ? `${title} · The lab` : 'The lab · Lyubomir Evtimov';
 	const year = new Date().getFullYear();
-	const canonical = url.origin + url.pathname;
+	const canonical = LAB + url.pathname;
+	// A "<" inside the data could otherwise close the script element early.
+	const structuredJson = structured && JSON.stringify({ '@context': 'https://schema.org', ...structured }).replace(/</g, '\\u003c');
 
 	const html = `<!doctype html>
 <html lang="en-GB">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
-<title>${esc(fullTitle)}</title>
+${noindex ? '<meta name="robots" content="noindex">\n' : ''}<title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(description)}">
-<meta property="og:site_name" content="The lab">
+${noindex ? '' : `<link rel="canonical" href="${esc(canonical)}">\n`}<meta property="og:site_name" content="The lab">
 <meta property="og:locale" content="en_GB">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${esc(title || 'The lab')}">
@@ -53,7 +64,7 @@ export function page({ url, title, description, body, status = 200 }) {
 <link rel="preload" href="/fonts/charis-sil-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/lab.css">
-</head>
+${structuredJson ? `<script type="application/ld+json">${structuredJson}</script>\n` : ''}</head>
 <body>
 <a class="skip-link" href="#main">Skip to the content</a>
 <header class="site-header">
@@ -63,7 +74,7 @@ export function page({ url, title, description, body, status = 200 }) {
 <main id="main" class="bucket">
 ${body}
 </main>
-<footer class="site-footer"><p>© ${year} Lyubomir Evtimov · Lab built with Claude</p></footer>
+<footer class="site-footer"><p>© ${year} Lyubomir Evtimov · Courses under <a href="${LICENCE}" rel="license">CC BY 4.0</a> · Lab built with Claude</p></footer>
 </body>
 </html>
 `;
@@ -81,6 +92,7 @@ export function notFound(url) {
 		title: 'Not found',
 		description: 'There is no page at this address.',
 		status: 404,
+		noindex: true,
 		body: `${back('/', 'The lab')}
 <article class="panel">
 	<header class="panel-head">

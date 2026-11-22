@@ -9,16 +9,16 @@
  *                              course (src/api.js)
  *
  * The styles, fonts, favicon and robots.txt are static files in public/,
- * served by Cloudflare before the Worker runs. Every response, static or
- * not, carries a noindex header, so search engines can read the lab but
- * never list it. No storage and nothing billed by usage. Every request is
+ * served by Cloudflare before the Worker runs. Search engines may list the
+ * pages, and /sitemap.xml lists them; the API's responses, redirects and
+ * 404s carry a noindex header. No storage and nothing billed by usage. Every request is
  * logged as one JSON line: in the `npm run dev` terminal locally, and
  * through `npm run tail` for the live lab.
  */
 
 import { api, apiError, randomHex } from './api.js';
 import { COURSES } from './courses/index.js';
-import { notFound } from './frame.js';
+import { LAB, notFound } from './frame.js';
 import { hub } from './hub.js';
 
 export default {
@@ -45,7 +45,11 @@ export default {
 
 		const headers = new Headers(response.headers);
 		headers.set('x-request-id', requestId);
-		headers.set('X-Robots-Tag', 'noindex, nofollow');
+		// Only the pages and the sitemap are for search engines: the API's
+		// JSON, redirects and 404s are kept out of their results.
+		const contentType = headers.get('Content-Type') || '';
+		const listable = response.status === 200 && /^(text\/html|application\/xml)/.test(contentType);
+		if (!listable) headers.set('X-Robots-Tag', 'noindex');
 		log.status = response.status;
 		log.ms = Date.now() - started;
 		console.log(JSON.stringify(log));
@@ -66,6 +70,7 @@ const STATUS_TEXT = {
 	422: 'Unprocessable Entity',
 	429: 'Too Many Requests',
 	500: 'Internal Server Error',
+	503: 'Service Unavailable',
 };
 
 // Every page, by its address: the hub, and each course's pages under its slug.
@@ -81,6 +86,7 @@ function pages(request, url) {
 	if (request.method !== 'GET' && request.method !== 'HEAD') return null;
 	if (path === '/v1' || path.startsWith('/v1/')) return null;
 
+	if (path === '/sitemap.xml') return sitemap();
 	if (PAGES[path]) return PAGES[path](url);
 	// A page's address without its closing slash goes to the one with it, so
 	// each page has one address. The Location is relative because under
@@ -94,4 +100,18 @@ function pages(request, url) {
 	const accept = request.headers.get('Accept') || '';
 	if (accept.includes('text/html')) return notFound(url);
 	return null;
+}
+
+// Every page, for search engines, with the day its course went up.
+function sitemap() {
+	const newest = COURSES.map((c) => c.published).sort().at(-1);
+	const lastmod = { '/': newest };
+	for (const course of COURSES) {
+		for (const sub of Object.keys(course.pages)) lastmod[`/${course.slug}/${sub}`] = course.published;
+	}
+	const urls = Object.keys(PAGES)
+		.map((path) => `\t<url><loc>${LAB}${path}</loc><lastmod>${lastmod[path]}</lastmod></url>`)
+		.join('\n');
+	const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+	return new Response(xml, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
 }

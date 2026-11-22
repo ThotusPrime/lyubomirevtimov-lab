@@ -14,8 +14,9 @@
  * reads MODELS and RATE_LIMIT from here, so the two never disagree.
  */
 
-// Where the course's reference lives, for the hint in an unknown route's error.
-const DOCS_PATH = '/troubleshooting-an-api/docs/';
+// Where the course and its reference live, for the hints in some errors.
+const COURSE_PATH = '/troubleshooting-an-api/';
+const DOCS_PATH = COURSE_PATH + 'docs/';
 
 export const RATE_LIMIT = { requests: 5, perSeconds: 10 };
 
@@ -78,6 +79,21 @@ export async function api(request, env, url, log) {
 // --- Authentication -------------------------------------------------------
 
 function authenticate(request, env) {
+	// A lab with no keys can't let anyone in: a learner's copy before
+	// `npm run setup`, or the live lab, which serves only the course's pages
+	// because every learner runs the API on their own computer.
+	const keys = loadKeys(env);
+	if (Object.keys(keys).length === 0) {
+		return {
+			error: apiError(
+				503,
+				'server_error',
+				'no_keys',
+				`This lab has no API keys, so it can't accept requests. The API runs on your own computer: in the course's repository, run 'npm run setup' once, then start the lab with 'npm run dev'. The course page explains how: ${COURSE_PATH}.`,
+			),
+		};
+	}
+
 	const header = request.headers.get('Authorization');
 	if (!header) {
 		return { error: apiError(401, 'authentication_error', 'missing_api_key', "No API key provided. Send it in the Authorization header: 'Authorization: Bearer <key>'.") };
@@ -86,7 +102,7 @@ function authenticate(request, env) {
 		return { error: apiError(401, 'authentication_error', 'invalid_auth_scheme', "The Authorization header must use the Bearer scheme: 'Authorization: Bearer <key>'.") };
 	}
 	const key = header.slice('Bearer '.length);
-	const account = loadKeys(env)[key];
+	const account = keys[key];
 	if (!account) {
 		return { error: apiError(401, 'authentication_error', 'invalid_api_key', `Invalid API key provided: ${maskKey(key)}.`) };
 	}
@@ -95,7 +111,8 @@ function authenticate(request, env) {
 
 function loadKeys(env) {
 	try {
-		return JSON.parse(env.LAB_KEYS || '{}');
+		const keys = JSON.parse(env.LAB_KEYS || '{}');
+		return keys && typeof keys === 'object' && !Array.isArray(keys) ? keys : {};
 	} catch {
 		return {};
 	}

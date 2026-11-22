@@ -1,8 +1,9 @@
-# The same policy as the main site. Crawlers may read the lab, so they can
-# see the noindex on every response (the X-Robots-Tag header), which keeps it
-# out of search results. Blocking them here would hide that noindex, and a
-# blocked address can still be listed if another page links to it.
-# AI training crawlers are blocked in Cloudflare, which adds the matching
-# rules above this file's contents (Bot Preference Sync).
+# The lab's pages are open to search engines, and the sitemap lists them.
+# The API under /v1 needs a key and answers with JSON marked noindex, so
+# there's nothing there to list.
+# AI training crawlers are blocked in Cloudflare for the whole domain, which
+# adds the matching rules above this file's contents (Bot Preference Sync).
 User-agent: *
 Allow: /
+
+Sitemap: https://lab.lyubomirevtimov.com/sitemap.xml

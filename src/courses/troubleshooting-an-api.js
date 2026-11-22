@@ -10,14 +10,27 @@
  */
 
 import { MODELS, RATE_LIMIT } from '../api.js';
-import { back, esc, page, shortDate } from '../frame.js';
+import { AUTHOR, back, esc, LAB, LICENCE, page, shortDate } from '../frame.js';
 
 export const slug = 'troubleshooting-an-api';
 export const title = 'Troubleshooting an API';
 export const published = '2026-11-22';
 export const summary =
 	'Find out why an API call fails and what fixes it, from the terminal and from Python, on a practice API you run on your own computer: ten tickets from people whose scripts have stopped working, and one log to dig through.';
-export const meta = ['Course', '10 tickets and an exercise', 'curl and Python', 'Free'];
+export const meta = ['Course', '10 tickets and an exercise', 'About 5 hours', 'curl and Python', 'Free'];
+
+// What search results show under the course page's title.
+const DESCRIPTION =
+	'A free course in troubleshooting an HTTP API from the terminal and from Python: ten tickets from people whose scripts have stopped working, on a practice API you run on your own computer.';
+
+// What the course teaches, as its page says it, for its structured data.
+const TEACHES = [
+	'Calling an API with curl and reading the status, headers and body of what comes back',
+	'Getting the real error out of a script that hides it',
+	'Telling whether a problem is in the request, the traffic, the account or the protocol',
+	'Explaining what went wrong and why, not only fixing it',
+];
+const PREREQUISITES = 'A terminal, Git, Node.js 24, Python 3 and curl. No knowledge of this API beforehand.';
 
 const REPOSITORY = 'https://github.com/ThotusPrime/lyubomirevtimov-lab';
 const COURSE_README = `${REPOSITORY}/blob/main/practice/README.md`;
@@ -47,7 +60,29 @@ function coursePage(url) {
 	return page({
 		url,
 		title,
-		description: summary,
+		description: DESCRIPTION,
+		// What search engines read the page as: a free course, by him, under
+		// the repository's licence. Only facts the page itself states.
+		structured: {
+			'@type': 'Course',
+			name: title,
+			description: DESCRIPTION,
+			url: `${LAB}/${slug}/`,
+			inLanguage: 'en-GB',
+			datePublished: published,
+			provider: AUTHOR,
+			creator: AUTHOR,
+			isAccessibleForFree: true,
+			license: LICENCE,
+			teaches: TEACHES,
+			coursePrerequisites: PREREQUISITES,
+			offers: [{ '@type': 'Offer', category: 'Free' }],
+			// About 5 hours: his own times on tickets 5 to 10, the slow ones halved for
+			// the time he wasn't focused, the midpoint of the shortest and longest
+			// times the course's 11 exercises (CLAUDE.md has the sums).
+			hasCourseInstance: [{ '@type': 'CourseInstance', courseMode: 'Online', courseWorkload: 'PT5H' }],
+			hasPart: { '@type': 'TechArticle', name: 'API reference', url: `${LAB}/${slug}/docs/` },
+		},
 		body: `${back('/', 'The lab')}
 <article class="panel">
 	<header class="panel-head">
@@ -56,7 +91,7 @@ function coursePage(url) {
 		<p class="panel-subtitle">A crash course in finding out why a call to an HTTP API fails and what fixes it, from the terminal and from Python code.</p>
 		<dl class="facts">
 			<div><dt>Made of</dt><dd>Eight tickets in order, two bonus tickets and one exercise</dd></div>
-			<div><dt>Takes</dt><dd>About 10 minutes to set up, then 15 to 30 minutes for most tickets</dd></div>
+			<div><dt>Takes</dt><dd>About 5 hours at your own pace, after 10 minutes of setting up</dd></div>
 			<div><dt>You need</dt><dd>A terminal, Git, Node.js 24, Python 3 and curl</dd></div>
 			<div><dt>Costs</dt><dd>Nothing. It runs on your own computer</dd></div>
 		</dl>
@@ -87,6 +122,7 @@ npm run setup
 npm run dev</code></pre>
 		<p><code>npm run setup</code> makes two API keys that only you have, and <code>npm run dev</code> starts the lab at <code>http://localhost:8788</code>, with these pages and the API under <code>/v1</code>. The course itself starts in <a href="${COURSE_README}"><code>practice/README.md</code></a>. The commands are written for macOS and Linux, and on Windows they work as written in WSL.</p>
 		<p><a href="${REPOSITORY}">The repository on GitHub</a></p>
+		<p>It's free to use, change and share for any purpose, including training at work, as long as you credit me and say what you changed, under <a href="${LICENCE}" rel="license">CC BY 4.0</a>.</p>
 
 		<h2>The API</h2>
 		<p>The <a href="/${slug}/docs/">API reference</a> lists the endpoints, the models, the limits and every error the API returns. It's the documentation the tickets' authors had in front of them, and you'll keep it open while you work.</p>
@@ -102,8 +138,17 @@ function docsPage(url) {
 
 	return page({
 		url,
-		title: 'API reference',
-		description: `The reference for the practice API in ${title}: endpoints, models, limits and errors.`,
+		title: `API reference · ${title}`,
+		description: `The reference for the practice API in ${title}, a free course: its endpoints, models, limits and errors.`,
+		structured: {
+			'@type': 'TechArticle',
+			headline: `API reference for ${title}`,
+			url: `${LAB}/${slug}/docs/`,
+			inLanguage: 'en-GB',
+			author: AUTHOR,
+			license: LICENCE,
+			isPartOf: { '@type': 'Course', name: title, url: `${LAB}/${slug}/` },
+		},
 		body: `${back(`/${slug}/`, title)}
 <article class="panel">
 	<header class="panel-head">
@@ -156,6 +201,7 @@ function docsPage(url) {
 				<tr><td>422</td><td>A field is missing or has the wrong type or value; <code>param</code> names it</td></tr>
 				<tr><td>429</td><td>Rate limit reached; wait for <code>Retry-After</code> seconds</td></tr>
 				<tr><td>500</td><td>A fault on the server's side</td></tr>
+				<tr><td>503</td><td>The lab has no keys yet: run <code>npm run setup</code>, then start it again</td></tr>
 			</tbody>
 		</table></div>
 	</div>
