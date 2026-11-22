@@ -393,20 +393,20 @@ Read the file in a few lines first, with `head`, before writing anything. Then l
 
 Four things in the log trip a first script:
 
-- 57 rows have `null` for both token counts, so `int(None)` crashes. Count them as zero.
-- 8 request ids appear twice, a `429` and then a `200` two seconds later.
-- 10 rows have their status as a string, `"200"` rather than `200`. Compare with `int(row["status"])`.
-- 6 rows have no `latency_ms` at all. It doesn't matter for the totals, only if you go on to time things.
+- 40 rows have `null` for both token counts, so adding them up crashes on `None`. Count them as zero.
+- 7 request ids appear twice, a `429` and then a `200` two seconds later.
+- 12 rows have their status as a string, all from one user: eleven `"200"` and one `"429"`. Compare with `int(row["status"])`.
+- 5 rows have no `latency_ms` at all. It doesn't matter for the totals, only if you go on to time things.
 
-The top three: `fable-io` with 128,142 tokens, `echo-ai` with 126,639, and `acme` with 109,277.
+The top three: `kestrel` with 144,019 tokens, `orchard` with 129,543, and `harbour` with 118,363.
 
 </details>
 
 <details><summary>Model answers</summary>
 
-1. The 57 requests that failed: 54 refused with `429` and 3 that hit a `500`. A failed request produced no answer and isn't billed, so it adds no tokens. Zero is right; crashing on `None`, or leaving those users out, isn't.
+1. The 40 requests that failed: 37 refused with `429` and 3 that hit a `500`. A failed request produced no answer and isn't billed, so it adds no tokens. Zero is right; crashing on `None`, or leaving those users out, isn't. The latency agrees: a `429` came back in 4 to 15 ms, because the API refused it before any model ran, while an answer took 150 to 950 ms from `lab/small` and 6 to 9 seconds from `lab/large`.
 2. Each one is a retry: the client got a `429`, waited, and sent the same request again, which got a `200` two seconds later. The tokens are only on the `200`, so the totals don't change. A count of requests per user would count them twice, though.
-3. `delta-labs`. Eight of its successful requests have the status as the string `"200"`, and `"200" == 200` is false in Python, so they drop out: its successful tokens come to 78,755 instead of 100,774. Turning the status into a number first, `int(row["status"])`, fixes it.
-4. `corvid`: 20 of its 52 requests were refused with `429`, while using the fewest tokens of anyone. It doesn't send a lot; it sends in bursts. The limit counts requests in a window, not tokens, so the lightest user can be the one it stops most.
+3. `harbour`. Eleven of its successful requests have the status as the string `"200"`, and `"200" == 200` is false in Python, so they drop out: its tokens come to 87,324 instead of 118,363, and it falls out of the top three, with `lumen` (111,676) taking its place. Turning the status into a number first, `int(row["status"])`, fixes it.
+4. `pinecone`: 24 of its 55 requests were refused with `429`, while it used the fewest tokens of anyone, 50,917. It doesn't send the most (`kestrel` sends 57); it sends in bursts of 8 to 10 requests within two seconds, against a limit of 5 per 10 seconds. The limit counts requests in a window, not tokens, so the lightest user can be the one it stops most.
 
 </details>

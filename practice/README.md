@@ -91,7 +91,7 @@ Open `HINTS.md` only after five minutes stuck, one level at a time.
 
 ## 6. The usage exercise
 
-`../exercises/token-usage/` has no broken script. It has a log of 300 requests and a question about who's using the most tokens, and you write the script that answers it. Do it after ticket 8. It works the same way: a **Done when** line, **Explain it** questions, and hints at the end of `HINTS.md`.
+`../exercises/token-usage/` has no broken script. It has a log of 311 requests and a question about who's using the most tokens, and you write the script that answers it. Do it after ticket 8. It works the same way: a **Done when** line, **Explain it** questions, and hints at the end of `HINTS.md`.
 
 ## The method
 

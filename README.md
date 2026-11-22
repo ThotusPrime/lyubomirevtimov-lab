@@ -9,7 +9,7 @@ The models are stand-ins: simple text rules, not AI. Everything around them beha
 - `wrangler.jsonc`: deploys it as its own Worker, `lyubomirevtimov-lab`, on the subdomain.
 - `practice/`: the course, with two Python tools, ten tickets, the concepts, the hints and a tester prompt. Start with `practice/README.md`.
 - `scripts/setup.mjs`: `npm run setup`, which makes a learner's own keys (below).
-- `exercises/`: practice that isn't a call to the API. `token-usage/` is a log of 300 requests (`requests.jsonl`) and a brief: write the script that finds who used the most tokens, and spot what in the log would make a total wrong.
+- `exercises/`: practice that isn't a call to the API. `token-usage/` is a log of 311 requests (`requests.jsonl`) and a brief: write the script that finds who used the most tokens, and spot what in the log would make a total wrong.
 
 ## Kept out of search results
 
