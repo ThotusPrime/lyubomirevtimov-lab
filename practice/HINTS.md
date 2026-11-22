@@ -363,15 +363,12 @@ Fix: pass the key in explicitly, `api_key=os.environ["LAB_API_KEY"]`, next to `b
 
 If your shell has an `OPENAI_API_KEY` of its own, the SDK sends that key to the lab instead, and you get a 401 with a masked `sk-...` key in the message. That's the same mistake from the other side, and a nasty one, because their OpenAI key leaves their machine for the wrong provider.
 
-**The other thing teams trip over:** model names. OpenAI's model names don't exist here, so a leftover model name gives `404 model_not_found`. `GET /v1/models` lists the right ones.
-
 </details>
 
 <details><summary>Model answers</summary>
 
 1. The SDK looks for the key in its `api_key` argument or in `OPENAI_API_KEY`, finds neither, and stops before it builds a request. Nothing reached the API, so there's no status code: it's the client's own error.
 2. The SDK sends that key, their OpenAI key, to the lab, and gets a `401` with a masked `sk-...` key in the message. It's worse because a secret for one provider has just been sent to another, and the error looks like the lab's fault.
-3. Model names. OpenAI's names don't exist here and give `404 model_not_found`. `GET /v1/models` lists the names this API has.
 
 </details>
 
