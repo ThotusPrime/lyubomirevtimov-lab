@@ -49,6 +49,10 @@ It prints the page with the Chrome already installed (headless, with a throwaway
 
 Once a certificate is deployed, save its page and its PDF in the Internet Archive's Wayback Machine (web.archive.org/save) and record the snapshots' addresses here. They're the one record of a certificate's date that he doesn't control himself.
 
+- `tapi-2026-001`, page: https://web.archive.org/web/20261122192431/https://lab.lyubomirevtimov.com/certificates/tapi-2026-001/
+- `tapi-2026-001`, PDF: https://web.archive.org/web/20261122193300/https://lab.lyubomirevtimov.com/certificates/tapi-2026-001.pdf
+- `tapi-2026-001`, PDF uploaded as an Internet Archive item (a copy he uploaded, so it records the file and its date, not that the lab served it): https://archive.org/details/tapi-2026-001
+
 ## Licence
 
 The courses and everything else in this repository are © 2026 Lyubomir Evtimov and licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) (`LICENSE`): free to use, change and share for any purpose, commercial included, as long as you credit him, link to the licence and say what you changed. To credit it, something like: *"Troubleshooting an API" by Lyubomir Evtimov, https://lab.lyubomirevtimov.com/troubleshooting-an-api/, CC BY 4.0.*
