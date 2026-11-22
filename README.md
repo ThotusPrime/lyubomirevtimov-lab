@@ -25,6 +25,7 @@ The same Worker serves the live hub and every learner's own copy, started with `
 - `practice/`: the troubleshooting course, with two Python tools, ten tickets, the concepts, the hints, and prompts for an AI tester and an AI teacher. Start with `practice/README.md`.
 - `exercises/`: the course's practice that isn't a call to the API. `token-usage/` is a log of 311 requests (`requests.jsonl`) and a brief: write the script that finds who used the most tokens, and spot what in the log would make a total wrong.
 - `scripts/setup.mjs`: `npm run setup`, which makes a learner's own keys (below).
+- `scripts/previews.mjs`: `npm run previews`, which draws the link-preview pictures into `public/previews/` and writes `src/previews.js`, which tells the pages where they are (Search engines, below).
 - `scripts/certificate-pdf.mjs`: `npm run certificate -- <id>`, which makes a certificate's PDF from its page (below).
 
 The pages carry no scripts and load nothing from elsewhere, so they're sent with a strict Content-Security-Policy (in `src/frame.js`). Their footer names the licence.
@@ -32,6 +33,8 @@ The pages carry no scripts and load nothing from elsewhere, so they're sent with
 ## Search engines
 
 The pages are open to search engines (since 22 November 2026; before that the whole lab was kept out of their results). Each page has a canonical address on `https://lab.lyubomirevtimov.com`, fixed rather than read from the request, so a learner's local copy still points to the live pages, and a JSON-LD block saying what it is, built only from facts already on the page: the hub is a list of courses, a course page a `Course` (free, by him, under the repository's licence) and its reference a `TechArticle`. `/sitemap.xml`, which the Worker builds from the list of pages, lists them, and `robots.txt` points to it. The API's responses, redirects and 404s carry an `X-Robots-Tag: noindex` header, and the 404 page a robots meta tag, so none of those are listed. Neither are certificates: their pages carry both, their PDFs the header (from `_headers`), and the sitemap leaves them out. The AI crawler policy is the site's: Cloudflare's settings apply to the whole domain, subdomains included.
+
+A link to a page shows a picture when it's posted somewhere (LinkedIn, Slack, a messenger), the same split as the main site's: a course's pages show the course's row opened up, large, in the lab's colours, and every other page shows the site's mark, small, beside the text. `npm run previews` draws them with the Chrome already installed, from each course's module (title, tagline, facts), `public/lab.css`'s colours and the fonts and favicon in `public/`, so run it again after changing any of those or adding a course, and commit what it writes. Each file name ends in a fingerprint of the picture, so a changed picture gets a new address and posts already made keep theirs. LinkedIn remembers a page for about a week, so after a change, run the link through LinkedIn's Post Inspector before posting it.
 
 ## Certificates
 

@@ -9,6 +9,7 @@
   "scripts": {
     "setup": "node scripts/setup.mjs",
     "certificate": "node scripts/certificate-pdf.mjs",
+    "previews": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON scripts/previews.mjs",
     "dev": "wrangler dev --port 8788",
     "deploy": "wrangler deploy",
     "tail": "wrangler tail lyubomirevtimov-lab"

@@ -11,12 +11,15 @@
 
 import { MODELS, RATE_LIMIT } from '../api.js';
 import { AUTHOR, back, esc, LAB, LICENCE, page, shortDate } from '../frame.js';
+import { PREVIEWS } from '../previews.js';
 
 export const slug = 'troubleshooting-an-api';
 export const title = 'Troubleshooting an API';
 export const published = '2026-11-22';
 export const summary =
 	'Find out why an API call fails and what fixes it, from the terminal and from Python, on a practice API you run on your own computer: ten tickets from people whose scripts have stopped working, and one log to dig through.';
+// The line under the title, on the course page and its link preview.
+export const tagline = 'A crash course in finding out why a call to an HTTP API fails and what fixes it, from the terminal and from Python code.';
 export const meta = ['Course', '10 tickets and an exercise', 'About 5 hours', 'curl and Python', 'Free'];
 
 // What search results show under the course page's title.
@@ -61,6 +64,7 @@ function coursePage(url) {
 		url,
 		title,
 		description: DESCRIPTION,
+		preview: PREVIEWS.courses[slug],
 		// What search engines read the page as: a free course, by him, under
 		// the repository's licence. Only facts the page itself states.
 		structured: {
@@ -88,7 +92,7 @@ function coursePage(url) {
 	<header class="panel-head">
 		<p class="panel-kind">Course <span aria-hidden="true">·</span> <time datetime="${published}">${shortDate(published)}</time></p>
 		<h1 class="panel-title">${esc(title)}</h1>
-		<p class="panel-subtitle">A crash course in finding out why a call to an HTTP API fails and what fixes it, from the terminal and from Python code.</p>
+		<p class="panel-subtitle">${esc(tagline)}</p>
 		<dl class="facts">
 			<div><dt>Made of</dt><dd>Eight tickets in order, two bonus tickets and one exercise</dd></div>
 			<div><dt>Takes</dt><dd>About 5 hours at your own pace, after 10 minutes of setting up</dd></div>
@@ -141,6 +145,8 @@ function docsPage(url) {
 		url,
 		title: `API reference · ${title}`,
 		description: `The reference for the practice API in ${title}, a free course: its endpoints, models, limits and errors.`,
+		// The course's own picture: a link to the reference is a link to the course.
+		preview: PREVIEWS.courses[slug],
 		structured: {
 			'@type': 'TechArticle',
 			headline: `API reference for ${title}`,

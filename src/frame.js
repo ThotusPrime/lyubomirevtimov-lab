@@ -6,6 +6,8 @@
  * Cloudflare serves without running the Worker.
  */
 
+import { PREVIEWS } from './previews.js';
+
 const SITE = 'https://lyubomirevtimov.com';
 
 // The lab's own address, for canonical links, the sitemap and structured
@@ -39,7 +41,10 @@ export function shortDate(iso) {
 // A page in the frame. `structured` is what the page is, for search engines
 // (schema.org, as JSON-LD), built only from facts already on the page.
 // `noindex` keeps a page out of search results, for the 404 page.
-export function page({ url, title, description, body, status = 200, structured, noindex = false }) {
+// `preview` is the picture a link to the page shows when it's posted
+// somewhere (src/previews.js, drawn by npm run previews): a course's own for
+// its pages, and the site's mark, small, for every other page.
+export function page({ url, title, description, body, status = 200, structured, noindex = false, preview = PREVIEWS.mark }) {
 	const fullTitle = title ? `${title} · The lab` : 'The lab · Lyubomir Evtimov';
 	const year = new Date().getFullYear();
 	const canonical = LAB + url.pathname;
@@ -59,7 +64,7 @@ ${noindex ? '' : `<link rel="canonical" href="${esc(canonical)}">\n`}<meta prope
 <meta property="og:title" content="${esc(title || 'The lab')}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(canonical)}">
-<meta name="color-scheme" content="light dark">
+${preview ? previewTags(preview) : ''}<meta name="color-scheme" content="light dark">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/charis-sil-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -79,6 +84,19 @@ ${body}
 </html>
 `;
 	return new Response(html, { status, headers: PAGE_HEADERS });
+}
+
+// The link preview's tags. The picture's address is on the live lab even in
+// a local copy, like the canonical link, since only the live one can be
+// fetched by LinkedIn or Slack.
+function previewTags(preview) {
+	return `<meta property="og:image" content="${esc(LAB + preview.path)}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="${preview.width}">
+<meta property="og:image:height" content="${preview.height}">
+<meta property="og:image:alt" content="${esc(preview.alt)}">
+<meta name="twitter:card" content="${preview.size === 'large' ? 'summary_large_image' : 'summary'}">
+`;
 }
 
 // The way back from a page to the one above it, above the panel.
