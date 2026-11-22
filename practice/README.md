@@ -43,6 +43,8 @@ pip install -r requirements.txt
 
 Check it worked: `which python3` should point inside `.venv`. A new terminal window starts without the venv, so activate it again there. If a script says `ModuleNotFoundError: No module named 'requests'`, this is why.
 
+On a Mac, with the Python that comes with macOS, every script prints two lines of `NotOpenSSLWarning` before anything else. It's harmless: Apple builds that Python against LibreSSL instead of OpenSSL, and `urllib3`, the library `requests` uses underneath, warns about it every time it loads. It's a warning, not the error, and telling the two apart is the first habit this course builds. A Python from python.org or Homebrew doesn't print it.
+
 ## 3. Exercise 0: get your keys into the shell
 
 Your keys are in `.env` in this folder: `LAB_API_KEY` for your own account, `LAB_TRIAL_KEY` for one of the tickets, and `LAB_BASE_URL`, which sends the tools to your own lab. The tools read them from the environment. Getting them there is the first exercise. Hint 0 in `HINTS.md` if you're stuck.
