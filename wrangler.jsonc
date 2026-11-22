@@ -27,7 +27,8 @@
 			"simple": { "limit": 5, "period": 10 }
 		}
 	]
-	// The API keys live in the LAB_KEYS secret, never in this repository:
-	//   npx wrangler secret put LAB_KEYS
+	// The API keys come from LAB_KEYS: locally from .dev.vars, made by
+	// `npm run setup`. The live Worker deliberately has no LAB_KEYS secret, so
+	// its API answers 503 no_keys and every learner runs their own.
 	// Its value is JSON: {"<key>": {"id": "acct_…", "plan": "…", "balance": 25}}
 }

@@ -48,7 +48,7 @@ None. It runs on the Workers Free plan: no storage, no AI models, nothing billed
 
 Every learner makes their own keys with `npm run setup`. It writes two files Git ignores: `.dev.vars`, the `LAB_KEYS` secret that `npm run dev` reads, and `practice/.env`, the two keys the tools use plus `LAB_BASE_URL=http://localhost:8788/v1`. It never overwrites either file, and stops if only one of them exists, because new keys in one wouldn't match the other. Own keys matter because the lab counts its rate limit per account: a shared key would put everyone in one allowance.
 
-A lab with no keys answers every `/v1` request with `503` and `no_keys`, and a message saying to run `npm run setup` and start the lab again. The live lab is meant to have none: every learner runs the API on their own computer, so the live site serves only the pages. Until its `LAB_KEYS` secret is deleted (`npx wrangler secret delete LAB_KEYS`), it still holds the keys used while the course was being built. The secret is JSON, in this shape:
+A lab with no keys answers every `/v1` request with `503` and `no_keys`, and a message saying to run `npm run setup` and start the lab again. The live lab has none, on purpose (its `LAB_KEYS` secret was deleted on 22 November 2026): every learner runs the API on their own computer, so the live site serves only the pages. The keys are JSON, in this shape:
 
 ```
 {"<key>": {"id": "acct_practice", "plan": "pay-as-you-go", "balance": 25},
