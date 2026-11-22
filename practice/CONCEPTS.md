@@ -55,6 +55,6 @@ A variable such as `LAB_API_KEY` belongs to a running shell and the programs tha
 
 ## Where to look things up
 
-- **The API's own documentation:** http://localhost:8788/ while your lab runs. It lists the endpoints, the models, the limits and the errors.
+- **The API's own documentation:** http://localhost:8788/troubleshooting-an-api/docs/ while your lab runs. It lists the endpoints, the models, the limits and the errors.
 - **Built-in help:** `curl --help all`, `man curl`, Python's `help()` and `python3 -m pydoc`.
 - **The method** in the course README: reproduce, read the error, get the real response, change one thing, confirm.

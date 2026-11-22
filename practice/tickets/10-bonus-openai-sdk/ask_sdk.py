@@ -13,7 +13,7 @@ import sys
 
 from openai import OpenAI
 
-client = OpenAI(base_url=os.environ.get("LAB_BASE_URL", "https://lab.lyubomirevtimov.com/v1"))
+client = OpenAI(base_url=os.environ.get("LAB_BASE_URL", "http://localhost:8788/v1"))
 
 
 def main():

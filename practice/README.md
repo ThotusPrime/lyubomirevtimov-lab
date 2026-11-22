@@ -1,6 +1,6 @@
 # Practice: troubleshooting an API
 
-A crash course in troubleshooting an HTTP API, from the terminal and from code. The lab (`lab.lyubomirevtimov.com`) is the API. It works like an OpenAI-compatible inference API, the kind behind most AI features, and its failures are the real ones: authentication, unknown models, content types, rate limits, timeouts, billing and streaming. This folder is the other side: two small Python tools, and eight tickets where someone's script has stopped working.
+A crash course in troubleshooting an HTTP API, from the terminal and from code. The lab is the API, and you run it on your own computer. It works like an OpenAI-compatible inference API, the kind behind most AI features, and its failures are the real ones: authentication, unknown models, content types, rate limits, timeouts, billing and streaming. This folder is the other side: two small Python tools, and ten tickets where someone's script has stopped working.
 
 By the end you'll be able to:
 
@@ -29,7 +29,7 @@ npm run setup
 npm run dev
 ```
 
-`npm run setup` makes two keys and writes them to two files Git ignores: `.dev.vars` for the lab and `practice/.env` for you. It never overwrites them, so running it again is safe. `npm run dev` starts the lab on http://localhost:8788 and keeps running: leave that terminal open, because the lab's log appears there, and open a second terminal for everything else. Open http://localhost:8788/ in a browser for the API's documentation.
+`npm run setup` makes two keys and writes them to two files Git ignores: `.dev.vars` for the lab and `practice/.env` for you. It never overwrites them, so running it again is safe. `npm run dev` starts the lab on http://localhost:8788 and keeps running: leave that terminal open, because the lab's log appears there, and open a second terminal for everything else. Open http://localhost:8788/troubleshooting-an-api/docs/ in a browser for the API's documentation.
 
 ## 2. Set up Python
 
@@ -61,7 +61,7 @@ python3 batch.py prompts.csv results.csv
 
 The batch takes about half a minute and pauses once or twice with "rate limited, waiting 10s". That's it working: it hits the limit, waits as the API says, and carries on.
 
-Then make the same calls with curl, written from memory: list the models, then send one chat completion. Reference at the end of hint 0, and the API's documentation at http://localhost:8788/.
+Then make the same calls with curl, written from memory: list the models, then send one chat completion. Reference at the end of hint 0, and the API's documentation at http://localhost:8788/troubleshooting-an-api/docs/.
 
 Before the tickets, read `CONCEPTS.md`: what a request and a response are made of, status codes, the headers worth knowing, JSON and environment variables.
 

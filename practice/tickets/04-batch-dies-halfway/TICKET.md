@@ -17,7 +17,7 @@
 > p05: done
 > Traceback (most recent call last):
 >   ...
-> requests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: https://lab.lyubomirevtimov.com/v1/chat/completions
+> requests.exceptions.HTTPError: 429 Client Error: Too Many Requests for url: http://localhost:8788/v1/chat/completions
 > ```
 
 **Their script:** `batch.py` and `prompts.csv`, in this folder.

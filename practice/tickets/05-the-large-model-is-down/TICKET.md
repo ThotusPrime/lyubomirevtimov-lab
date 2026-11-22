@@ -10,7 +10,7 @@
 > ```
 >
 > ```
-> requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='lab.lyubomirevtimov.com', port=443): Read timed out. (read timeout=5)
+> requests.exceptions.ReadTimeout: HTTPConnectionPool(host='localhost', port=8788): Read timed out. (read timeout=5)
 > ```
 
 **Their script:** `ask.py` in this folder.

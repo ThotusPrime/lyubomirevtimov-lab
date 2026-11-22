@@ -10,7 +10,7 @@
 > ```
 >
 > ```
-> requests.exceptions.HTTPError: 404 Client Error: Not Found for url: https://lab.lyubomirevtimov.com/v1/chat/completions
+> requests.exceptions.HTTPError: 404 Client Error: Not Found for url: http://localhost:8788/v1/chat/completions
 > ```
 
 **Their script:** `ask.py` in this folder.

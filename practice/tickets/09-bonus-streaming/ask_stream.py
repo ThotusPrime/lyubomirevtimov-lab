@@ -11,7 +11,7 @@ import sys
 
 import requests
 
-BASE_URL = os.environ.get("LAB_BASE_URL", "https://lab.lyubomirevtimov.com/v1")
+BASE_URL = os.environ.get("LAB_BASE_URL", "http://localhost:8788/v1")
 
 
 def main():

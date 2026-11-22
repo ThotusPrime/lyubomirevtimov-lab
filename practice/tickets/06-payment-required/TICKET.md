@@ -10,7 +10,7 @@
 > ```
 >
 > ```
-> requests.exceptions.HTTPError: 402 Client Error: Payment Required for url: https://lab.lyubomirevtimov.com/v1/chat/completions
+> requests.exceptions.HTTPError: 402 Client Error: Payment Required for url: http://localhost:8788/v1/chat/completions
 > ```
 
 **Their script:** `ask.py` in this folder. Their key is `LAB_TRIAL_KEY` in your `.env`. Run the script with their key instead of yours, without changing your own `LAB_API_KEY` for the rest of the session.

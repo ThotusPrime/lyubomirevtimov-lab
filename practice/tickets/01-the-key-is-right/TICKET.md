@@ -14,7 +14,7 @@
 > and got:
 >
 > ```
-> requests.exceptions.HTTPError: 401 Client Error: Unauthorized for url: https://lab.lyubomirevtimov.com/v1/chat/completions
+> requests.exceptions.HTTPError: 401 Client Error: Unauthorized for url: http://localhost:8788/v1/chat/completions
 > ```
 
 **Their script:** `ask.py` in this folder. Run it with your own key, as they would with theirs.
