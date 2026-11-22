@@ -7,6 +7,9 @@
  *   /<slug>/ and below         a course's pages (src/courses/)
  *   /v1/...                    the practice API of the troubleshooting
  *                              course (src/api.js)
+ *   /certificates/<id>/        a certificate the lab has issued
+ *                              (src/certificates.js), kept out of search
+ *                              results and the sitemap
  *
  * The styles, fonts, favicon and robots.txt are static files in public/,
  * served by Cloudflare before the Worker runs. Search engines may list the
@@ -17,6 +20,7 @@
  */
 
 import { api, apiError, randomHex } from './api.js';
+import { pages as certificatePages } from './certificates.js';
 import { COURSES } from './courses/index.js';
 import { LAB, notFound } from './frame.js';
 import { hub } from './hub.js';
@@ -48,7 +52,7 @@ export default {
 		// Only the pages and the sitemap are for search engines: the API's
 		// JSON, redirects and 404s are kept out of their results.
 		const contentType = headers.get('Content-Type') || '';
-		const listable = response.status === 200 && /^(text\/html|application\/xml)/.test(contentType);
+		const listable = response.status === 200 && /^(text\/html|application\/xml)/.test(contentType) && !UNLISTED.has(url.pathname);
 		if (!listable) headers.set('X-Robots-Tag', 'noindex');
 		log.status = response.status;
 		log.ms = Date.now() - started;
@@ -78,6 +82,11 @@ const PAGES = { '/': hub };
 for (const course of COURSES) {
 	for (const [sub, render] of Object.entries(course.pages)) PAGES[`/${course.slug}/${sub}`] = render;
 }
+// The sitemap lists only these. Certificates are pages too, but they're
+// reached from their holders' own links, not from search results.
+const LISTED = Object.keys(PAGES);
+const UNLISTED = new Set(Object.keys(certificatePages));
+Object.assign(PAGES, certificatePages);
 
 // Answers a request for a page, or returns null to hand it to the API.
 function pages(request, url) {
@@ -109,7 +118,7 @@ function sitemap() {
 	for (const course of COURSES) {
 		for (const sub of Object.keys(course.pages)) lastmod[`/${course.slug}/${sub}`] = course.published;
 	}
-	const urls = Object.keys(PAGES)
+	const urls = LISTED
 		.map((path) => `\t<url><loc>${LAB}${path}</loc><lastmod>${lastmod[path]}</lastmod></url>`)
 		.join('\n');
 	const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;

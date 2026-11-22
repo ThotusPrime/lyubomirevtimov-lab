@@ -2,3 +2,6 @@
 # (the styles, fonts, favicon and robots.txt). The Worker sets its own.
 /*
   X-Content-Type-Options: nosniff
+# Certificates are reached from their holders' own links, not from search results.
+/certificates/*
+  X-Robots-Tag: noindex
