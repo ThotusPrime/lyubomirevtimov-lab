@@ -27,4 +27,3 @@
 
 1. What did the lab's log say about the failed request that the job's own output didn't?
 2. What is a model's context length, and why can the same document fail on one model and work on another?
-3. Why does every response carry a request id, and when would you send one to an API's provider instead of, or as well as, the error message?

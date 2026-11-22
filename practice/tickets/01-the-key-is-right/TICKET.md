@@ -26,5 +26,4 @@
 **Explain it:**
 
 1. Why did the API refuse a key that was correct?
-2. Why does the `Authorization` header carry a scheme at all, rather than just the key?
-3. Suppose they fix the scheme but one character of the key is wrong. What status and error do you expect, and how would you tell the two failures apart?
+2. Suppose they fix the scheme but one character of the key is wrong. What status and error do you expect, and how would you tell the two failures apart?

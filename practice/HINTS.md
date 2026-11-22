@@ -73,8 +73,7 @@ Fix: `headers={"Authorization": f"Bearer {api_key}"}`.
 <details><summary>Model answers</summary>
 
 1. The key was never checked. The API reads the header as a scheme followed by the credentials, and a bare key has no scheme, so it refuses the request before it looks at the key. The error body says so: `invalid_auth_scheme`.
-2. One header serves several ways of authenticating, such as `Basic` for a username and password, or `Bearer` for a token. The scheme tells the server how to read what follows. `Bearer` means whoever holds the token is let in, which is also why a leaked key is as good as a stolen one.
-3. Still `401`, so the status alone can't tell them apart. The body can: the code becomes `invalid_api_key`, and the message shows the start and end of the key that was sent, masked, so you can compare it with the right one without printing the whole key.
+2. Still `401`, so the status alone can't tell them apart. The body can: the code becomes `invalid_api_key`, and the message shows the start and end of the key that was sent, masked, so you can compare it with the right one without printing the whole key.
 
 </details>
 
@@ -294,7 +293,6 @@ Fix: send a document that doesn't fit to `lab/large`, which takes 32,768 tokens,
 
 1. The status (`400`), the error code (`context_length_exceeded`), the model (`lab/small`) and the account. The job printed only that the request failed and its id; the API's explanation was in the response body, which the script threw away.
 2. The most a model can take in one request, counted in tokens, with the prompt and the answer together. `lab/small` takes 4,096 and `lab/large` 32,768, so the handbook, at about 6,000 tokens, fits only the large one. The lab counts a token as about four characters; real models count differently, but every model has a limit.
-3. The id lets the provider find that exact request in their own logs, with what the client never saw: the account, the model, the timing, what failed inside. Send it whenever you report a problem: the error message says what the API told you, and the id lets them see the rest. It carries none of the request's content, so it's safe to paste into a ticket or a chat.
 
 </details>
 
