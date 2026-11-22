@@ -15,7 +15,11 @@ The skills carry over to any HTTP API. You need a terminal, Git, Node.js 24 (the
 
 Each ticket is a report from someone whose script fails: their command, their error, and usually their guess at the cause. The guess is often wrong, so treat it as a lead, not a fact. You reproduce the problem, find the cause, fix their script, and then check that you can answer a few questions about it, which show whether you understood it or only patched it. Your work often answers them already, and then there's nothing left to answer.
 
-**Work with AI assistants switched off while you solve a ticket.** Reading the error yourself is the skill this course teaches, and an assistant would do that step for you. Built-in help (`--help`, `man`, Python's `help()`) is allowed, and learning to use it is part of the point. Once you've fixed a ticket, an AI assistant is welcome back as your tester: `TESTER.md` has a prompt that makes it look over your work and question you only on what your work doesn't already show, without giving the answers away.
+There are two ways to take it, and either way you read every error yourself, because that's the skill this course teaches. Built-in help (`--help`, `man`, Python's `help()`) is allowed on both, and learning to use it is part of the point.
+
+**Alone, with AI assistants switched off while you solve a ticket.** An assistant would read the error for you, which is the step the course is about. Once you've fixed a ticket, an AI assistant is welcome back as your tester: `TESTER.md` has a prompt that makes it look over your work and question you only on what your work doesn't already show, without giving the answers away.
+
+**With an AI assistant as your teacher.** `TEACHER.md` has a prompt that makes an AI chat teach you rather than answer for you: it takes you through the setup, gives you one ticket at a time and a hint only when you ask for one, explains what you ask about, tests you once a ticket is done, and never writes the fix. The AI in your editor stays switched off either way, and the teacher helps you switch it off.
 
 ## 1. Get your own lab running (about 10 minutes)
 
@@ -77,21 +81,21 @@ Do 1 to 8 in order. 9 and 10 are bonuses. Most take 15 to 30 minutes, the first 
 | The server's side | What the API's own log knows that the response didn't say | 8, and the usage exercise |
 | The protocol | Responses and libraries that don't work the way the script expects | 9, 10 (bonus) |
 
-For each one:
+For each one (with a teacher, it takes you through these steps):
 
-1. Read `TICKET.md`. If you like working against the clock, set a 10-minute timer before you allow yourself the hints.
+1. Read `TICKET.md`, and only that: the ticket's questions are in `QUESTIONS.md` beside it, and they're for afterwards. If you like working against the clock, set a 10-minute timer before you allow yourself the hints.
 2. Reproduce it: run their command and get their error.
 3. Say each step out loud, or write it down, as if explaining it to a colleague. It's how you notice the step you skipped.
 4. Fix it in a copy (`cp ask.py ask_fixed.py`), so the original stays broken for next time. Git ignores the copies.
 5. Check it against the ticket's **Done when** line.
-6. Check yourself against the questions under **Explain it**. Your notes from the work often answer some of them already, so tick those off. Write answers only for the ones your work doesn't cover, and do that before you look at anything. Then compare with the model answers at the end of that ticket's hints, or give your work to the tester in `TESTER.md`, which questions you only on what's left. If nothing's left, the ticket is done.
+6. Open `QUESTIONS.md` and check yourself against its **Explain it** questions. Your notes from the work often answer some of them already, so tick those off. Write answers only for the ones your work doesn't cover, and do that before you look at anything. Then compare with the model answers at the end of that ticket's hints, or give your work to the tester in `TESTER.md`, which questions you only on what's left. If nothing's left, the ticket is done.
 7. Note it in your log: `cp LOG.template.md LOG.md` once, then a row for each ticket. Git ignores `LOG.md`.
 
 Open `HINTS.md` only after five minutes stuck, one level at a time.
 
 ## 6. The usage exercise
 
-`../exercises/token-usage/` has no broken script. It has a log of 311 requests and a question about who's using the most tokens, and you write the script that answers it. Do it after ticket 8. It works the same way: a **Done when** line, **Explain it** questions, and hints at the end of `HINTS.md`.
+`../exercises/token-usage/` has no broken script. It has a log of 311 requests and a question about who's using the most tokens, and you write the script that answers it. Do it after ticket 8. It works the same way: a **Done when** line, **Explain it** questions in its `QUESTIONS.md`, and hints at the end of `HINTS.md`.
 
 ## The method
 

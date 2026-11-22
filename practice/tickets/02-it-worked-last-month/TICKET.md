@@ -19,8 +19,4 @@
 
 **Done when:** their original command prints an answer, without passing `--model`.
 
-**Explain it:**
-
-1. What wasn't found, and how do you know?
-2. The same status code covers two different problems in this API. Which two, and what tells them apart?
-3. Nobody watches a nightly job. What should it have done so the failure explained itself on the first night?
+**Explain it:** once it's done, and not before, open `QUESTIONS.md` in this folder.

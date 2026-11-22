@@ -19,8 +19,4 @@
 
 **Done when:** their original command prints the answer as it arrives, a few words at a time, instead of crashing.
 
-**Explain it:**
-
-1. Why does `response.json()` fail on a streamed response?
-2. What does the stream actually look like, and how does the client know it has finished?
-3. The body already says `"stream": true`. Why does the script also need `stream=True` in its call to `requests`?
+**Explain it:** once it's done, and not before, open `QUESTIONS.md` in this folder.

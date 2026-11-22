@@ -19,7 +19,4 @@
 
 **Done when:** you can show the cause with their key, using their original command and one other request, without changing their script or your own `LAB_API_KEY`.
 
-**Explain it:**
-
-1. Why did it work yesterday and fail today, with no change to the code?
-2. How can anyone check this about their own account, without sending a request that costs money?
+**Explain it:** once it's done, and not before, open `QUESTIONS.md` in this folder.

@@ -13,11 +13,6 @@ This one has no broken script to fix. You write the script, the way you would to
 
 **Done when:** the script runs over the whole file without crashing, prints the top three with their totals, and you can say why every row it counts as zero should count as zero.
 
-**Explain it:**
-
-1. Some rows have no token counts. Which rows are they, and why is counting them as zero right?
-2. Some request ids appear twice. What happened to those requests, and does it change anyone's total?
-3. A script that counts only the rows with `status == 200` gets one user wrong. Whose, and why?
-4. Which user hits the rate limit most, and is that because they send the most?
+**Explain it:** once it's done, and not before, open `QUESTIONS.md` in this folder.
 
 The hints are at the end of `practice/HINTS.md`.

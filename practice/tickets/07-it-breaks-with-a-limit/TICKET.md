@@ -19,8 +19,4 @@
 
 **Done when:** their original command prints an answer, and the script still works without `--max-tokens`.
 
-**Explain it:**
-
-1. What did the API object to, and which part of the error says so?
-2. Their JSON was valid, yet the request still failed. What's the difference between `"50"` and `50` in JSON, and where did the wrong one come from?
-3. Once it's fixed, what do you expect from `--max-tokens 5000`, and why doesn't the fix make that work?
+**Explain it:** once it's done, and not before, open `QUESTIONS.md` in this folder.

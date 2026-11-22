@@ -21,7 +21,4 @@
 
 **Done when:** their original command prints a summary of `notes.txt`, and a failed call would now print the API's error instead of a `KeyError`.
 
-**Explain it:**
-
-1. What did the API send back, and why did that crash the script on `choices`?
-2. In `requests`, what's the difference between `data=` and `json=`, and why does the server care?
+**Explain it:** once it's done, and not before, open `QUESTIONS.md` in this folder.

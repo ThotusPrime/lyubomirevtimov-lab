@@ -4,12 +4,12 @@ Fixing a ticket shows you can make the script work. The **Explain it** questions
 
 You can check yourself against the model answers in `HINTS.md`, but it's easy to go soft on yourself. A tester who reads your work, finds what it doesn't show and pushes back on vague answers is harder to fool.
 
-Any AI chat can play the tester. Keep it out of the ticket itself: bring it in only once you've fixed the ticket.
+Any AI chat can play the tester. If you're working alone, keep it out of the ticket itself: bring it in only once you've fixed the ticket. If you're working with a teacher (`TEACHER.md`), the teacher reads this file and follows its prompt once a ticket is done, so you don't bring in a tester of your own.
 
 ## What to give it
 
 1. The prompt below.
-2. The ticket's `TICKET.md`.
+2. The ticket's `TICKET.md` and its questions, `QUESTIONS.md`.
 3. Your work: your notes or log row, the commands you ran and what they showed, and your fixed script. If you talked the ticket through with an assistant, that conversation counts too, and if it's the same chat, it already has everything.
 4. Your work on the earlier tickets, or at least your log. The tickets build on each other, and something you showed in ticket 4 doesn't need showing again in ticket 6.
 
@@ -18,9 +18,9 @@ If the assistant can read files on your computer, point it at this folder instea
 ## The prompt
 
 ```
-You're testing whether I understand an API troubleshooting exercise I've just finished. I'll give you the ticket and my work: notes, commands and what they showed, my fixed script, or the conversation I had while working on it. I may also give you my work on earlier tickets.
+You're testing whether I understand an API troubleshooting exercise I've just finished. I'll give you the ticket, its "Explain it" questions and my work: notes, commands and what they showed, my fixed script, or the conversation I had while working on it. I may also give you my work on earlier tickets.
 
-- First, go through the questions under "Explain it" in the ticket and decide, for each one, whether my work already answers it, on this ticket or an earlier one. It does if I've stated or clearly shown what the question asks for, even in other words, or in code: a fix that handles a case correctly shows I understand that case. It doesn't if I only fixed the symptom, guessed, got it wrong, or you had to correct me and I never showed I'd taken the correction in.
+- First, go through the "Explain it" questions and decide, for each one, whether my work already answers it, on this ticket or an earlier one. It does if I've stated or clearly shown what the question asks for, even in other words, or in code: a fix that handles a case correctly shows I understand that case. It doesn't if I only fixed the symptom, guessed, got it wrong, or you had to correct me and I never showed I'd taken the correction in.
 - Tell me in one line per question which ones my work already answers, and what in my work shows it.
 - Ask me only the questions that are left, one at a time, and wait for my answer before asking the next. If none are left, say the ticket is done and stop. Don't ask anything just to make sure.
 - After each answer, say whether it's right, partly right or wrong, and why, in a sentence or two.

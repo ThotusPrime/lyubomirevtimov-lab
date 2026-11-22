@@ -23,7 +23,4 @@
 
 **Done when:** their original command prints a summary for every file in `docs/`, and a failed request would now print the API's error message next to its request id.
 
-**Explain it:**
-
-1. What did the lab's log say about the failed request that the job's own output didn't?
-2. What is a model's context length, and why can the same document fail on one model and work on another?
+**Explain it:** once it's done, and not before, open `QUESTIONS.md` in this folder.

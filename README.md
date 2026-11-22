@@ -20,7 +20,7 @@ The same Worker serves the live hub and every learner's own copy, started with `
 - `src/courses/index.js`: the list of courses. Adding one means writing its module beside it and adding it there.
 - `public/`: static files Cloudflare serves without running the Worker. `lab.css` is the pages' styles: its first half is a copy of the parts of the site's `src/styles/base.css` and `theme.css` (in `~/Dev/personal-blog`) it uses, so a change to the site's colours needs copying here too, and its second half is the lab's own (the hub's rows and a course's panel). The fonts are copies of the latin files from `@fontsource/charis-sil` and `@fontsource/ibm-plex-sans` 5.3.0, the favicon is the site's, and `_headers` adds `nosniff` to all of them. `robots.txt` allows everything and names the sitemap.
 - `wrangler.jsonc`: deploys it as its own Worker, `lyubomirevtimov-lab`, on the subdomain.
-- `practice/`: the troubleshooting course, with two Python tools, ten tickets, the concepts, the hints and a tester prompt. Start with `practice/README.md`.
+- `practice/`: the troubleshooting course, with two Python tools, ten tickets, the concepts, the hints, and prompts for an AI tester and an AI teacher. Start with `practice/README.md`.
 - `exercises/`: the course's practice that isn't a call to the API. `token-usage/` is a log of 311 requests (`requests.jsonl`) and a brief: write the script that finds who used the most tokens, and spot what in the log would make a total wrong.
 - `scripts/setup.mjs`: `npm run setup`, which makes a learner's own keys (below).
 

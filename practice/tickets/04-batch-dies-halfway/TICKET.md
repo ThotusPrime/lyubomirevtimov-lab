@@ -26,8 +26,4 @@
 
 **Done when:** their original command finishes every row of `prompts.csv`, and an error other than the rate limit still stops it.
 
-**Explain it:**
-
-1. Why did three rows work, and why does the real file fail at about the sixth?
-2. What is a 429 telling the client, and what is `Retry-After` for?
-3. Why is waiting for `Retry-After` better than pausing after every five requests?
+**Explain it:** once it's done, and not before, open `QUESTIONS.md` in this folder.

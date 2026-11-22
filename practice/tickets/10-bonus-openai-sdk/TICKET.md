@@ -19,7 +19,4 @@
 
 **Done when:** their original command prints an answer, with the key still only in `LAB_API_KEY`.
 
-**Explain it:**
-
-1. Why did it fail before sending anything, and why is there no status code?
-2. What happens instead if your shell has an `OPENAI_API_KEY` of its own, and why is that worse than the error they got?
+**Explain it:** once it's done, and not before, open `QUESTIONS.md` in this folder.
