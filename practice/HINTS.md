@@ -138,7 +138,6 @@ Fix: `json=payload`, which turns the dictionary into JSON and sets the header. T
 
 1. A `415` with an error body, `{"error": {...}}`, saying the body must be JSON with `Content-Type: application/json`. The script never checked the status, so it read the error as if it were an answer, and an error has no `choices`.
 2. `data=` sends whatever you give it as it is, and a string gets no `Content-Type`. `json=` turns the dictionary into JSON and sets `Content-Type: application/json`. The header tells the server how to read the body, and this API refuses to guess.
-3. Check the status before reading the body: `raise_for_status()`, or print the status and body when it isn't 200. Here it would have printed the `415` and the API's message about the content type, instead of `KeyError: 'choices'`.
 
 </details>
 
@@ -231,7 +230,6 @@ Their account is on the trial plan with a balance of $0.00. The trial credit ran
 
 1. Their trial credit ran out. The account is on the trial plan with a balance of $0.00, so every chat completion is refused with `402` and `insufficient_balance`, whatever the code does. Adding credit fixes it with no code change.
 2. `GET /v1/account` with their key shows the plan and the balance, and costs nothing. Checking it before blaming the code would have answered the ticket in one request.
-3. A `401` is about who you are: fix the key or the header. A `402` is about money: add credit. A `429` is about how fast: wait for `Retry-After`. Only the `429` gets better by retrying; retrying a `401` or a `402` sends the same refused request again.
 
 </details>
 
@@ -414,6 +412,6 @@ The top three: `fable-io` with 128,142 tokens, `echo-ai` with 126,639, and `acme
 1. The 57 requests that failed: 54 refused with `429` and 3 that hit a `500`. A failed request produced no answer and isn't billed, so it adds no tokens. Zero is right; crashing on `None`, or leaving those users out, isn't.
 2. Each one is a retry: the client got a `429`, waited, and sent the same request again, which got a `200` two seconds later. The tokens are only on the `200`, so the totals don't change. A count of requests per user would count them twice, though.
 3. `delta-labs`. Eight of its successful requests have the status as the string `"200"`, and `"200" == 200` is false in Python, so they drop out: its successful tokens come to 78,755 instead of 100,774. Turning the status into a number first, `int(row["status"])`, fixes it.
-4. `corvid`: 20 of its 52 requests were refused with `429`, while using the fewest tokens of anyone. It sends in bursts rather than sending a lot. Tell them to wait for `Retry-After` and spread their requests out, and ask for a higher limit only if they really need the throughput.
+4. `corvid`: 20 of its 52 requests were refused with `429`, while using the fewest tokens of anyone. It doesn't send a lot; it sends in bursts. The limit counts requests in a window, not tokens, so the lightest user can be the one it stops most.
 
 </details>

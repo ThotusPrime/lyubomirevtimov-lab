@@ -23,4 +23,3 @@
 
 1. Why did it work yesterday and fail today, with no change to the code?
 2. How can anyone check this about their own account, without sending a request that costs money?
-3. A 401, a 402 and a 429 all refuse the request. What does each one ask the client to do, and which of them can retrying fix?

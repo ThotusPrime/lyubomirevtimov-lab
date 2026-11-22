@@ -25,4 +25,3 @@
 
 1. What did the API send back, and why did that crash the script on `choices`?
 2. In `requests`, what's the difference between `data=` and `json=`, and why does the server care?
-3. Which one change makes the next failure explain itself, and what would it have printed here?
